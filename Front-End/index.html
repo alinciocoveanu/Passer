@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+
+        <title>Passer | Welcome</title>
+        <link rel="stylesheet" href="./css/style.css">
+    </head>
+
+    <body>
+        <header>
+            <div class="container">
+                <div id="branding">
+                    <a href="index.html">
+                        <img src="images/logo_transparent.png">
+                    </a>
+                </div>
+                <nav>
+                    <ul>
+                        <li class="current"><a href="index.html">About</a></li>
+                        <li><a href="index.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <section id="showcase">
+            <div class="container">
+                <h1>Passer - Password Manager</h1>
+            </div>
+        </section>
+
+        <section id="login">
+            <div align="center">
+                <!-- Log In button - opens the pop up box-->
+                <button onclick="document.getElementById('logInBox').style.display='block'" style="width:auto;">Log In</button>
+            </div>
+
+            <div id="logInBox" class="popUpBox">
+                <form class="popUpBoxContent animate" method="post">
+                    <div style="padding: 20px">
+                        <input type="text" placeholder="Enter Username" required>
+
+                        <input type="password" placeholder="Enter Password" required>
+
+                        <button type="submit">Login</button>
+                        <button type="button"><a  href="createAccount.html" style="text-decoration: none; color: white;">Create an account</a></button>
+                        <input type="checkbox"> Remember me
+                    </div>
+
+                    <div class="boxLower">
+                        <button type="button" onclick="document.getElementById('logInBox').style.display='none'" class="cancelButton">Cancel</button>
+                        <div style="float: right; padding-top: 16px;">
+                            <a href="#">Forgot password?</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="boxes">
+            <div class="container">
+                <div class="box">
+                    <img src="images/logo-test.png">
+                    <h3>Log In and Go</h3>
+                    <p>Lorem Ipsum</p>
+                </div>
+
+                <div class="box">
+                    <img src="images/logo-test.png">
+                    <h3>Simplify online shopping</h3>
+                    <p>Lorem Ipsum</p>
+                </div>
+
+                <div class="box">
+                    <img src="images/logo-test.png">
+                    <h3>Generate strong passwords</h3>
+                    <p>Lorem Ipsum</p>
+                </div>
+
+                <div class="box">
+                    <img src="images/logo-test.png">
+                    <h3>Store digital records</h3>
+                    <p>Lorem Ipsum</p>
+                </div>
+
+                <div class="box">
+                    <img src="images/logo-test.png">
+                    <h3>Share effortlessly</h3>
+                    <p>Lorem Ipsum</p>
+                </div>
+
+                <div class="box">
+                    <img src="images/logo-test.png">
+                    <h3>Prepare for the unknown</h3>
+                    <p>Lorem Ipsum</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Passer - Password Manager &copy; 2019</p>
+        </footer>
+    </body>
+</html>
