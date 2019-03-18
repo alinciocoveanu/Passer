@@ -33,9 +33,9 @@ ul {
 header {
     background: #5C9FC4;
     color: #ffffff;
-    padding-top: 30px;
+    padding-top: 10px;
     min-height: 70px;
-    border-bottom: #05476B 3px solid;
+    border-bottom: #05476B 2px solid;
 }
 
 header a {
@@ -61,12 +61,12 @@ header #branding h1 {
 }
 
 header #branding img {
-    width: 150px;
+    width: 100px;
 }
 
 header nav {
     float: right;
-    margin-top: 10px;
+    margin-top: 30px;
 }
 
 header .highlight, header .current a {
@@ -112,14 +112,14 @@ header a:hover {
 }
 
 footer {
-    padding: 20px;
+    padding: 10px;
     margin-top: 20px;
     color: #ffffff;
     background-color: #5C9FC4;
     text-align: center;
 }
 
-<!-- -->
+<!--  -->
 
 /* Background of the pop up box */
 .popUpBox {
@@ -148,13 +148,22 @@ footer {
     padding-right: 20px;
 }
 
-input[type=text], input[type=password] {
+#login input[type=text], #login input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
+}
+
+#formular input[type=text], #formular input[type=password] {
+    width: 40%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: content-box;
 }
 
 button {
@@ -165,6 +174,10 @@ button {
     border: none;
     cursor: pointer;
     width: 100%;
+}
+
+button:hover{
+    opacity: 0.7;
 }
 
 .cancelButton {
@@ -187,4 +200,25 @@ button {
 @keyframes animatezoom {
     from {transform: scale(0)}
     to {transform: scale(1)}
+}
+
+.formular {
+    text-align: center;
+    margin: 50px auto 0;
+    padding-right: 20px;
+    padding-left: 20px;
+    border: 10px;
+}
+
+#formular{
+    padding-right: 15%;
+    padding-left: 15%;
+}
+
+.createFormular {
+    background-color: white;
+    margin-right: 20%;
+    margin-left: 20%;
+    border: 1px solid gray;
+    border-radius: 10px;
 }
