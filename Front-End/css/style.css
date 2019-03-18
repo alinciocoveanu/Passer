@@ -13,6 +13,8 @@ ul {
 
 .container {
     width: 100%;
+    margin: auto;
+    overflow: hidden;
 }
 
 /*
@@ -145,8 +147,8 @@ footer {
     padding-left: 20px;
     padding-right: 20px;
 }
-#login input[type=text], #login input[type=password] {
 
+#login input[type=text], #login input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -164,8 +166,24 @@ footer {
     box-sizing: content-box;
 }
 
+button {
+    background-color: #1872a4;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
 button:hover{
     opacity: 0.7;
+}
+
+.cancelButton {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
 }
 
 /* Add zoom animation */
