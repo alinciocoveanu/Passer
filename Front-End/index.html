@@ -6,7 +6,6 @@
 
         <title>Passer | Welcome</title>
         <link rel="stylesheet" href="./css/style.css">
-        <link rel="shortcut icon" type="image/x-icon" href="./images/logo_transparent.ico" />
     </head>
 
     <body>
@@ -33,8 +32,30 @@
         </section>
 
         <section id="login">
-            <div align="center" class="container">
-                <a href="index.html" class="login-button">Log In</a>
+            <div align="center">
+                <!-- Log In button - opens the pop up box-->
+                <button onclick="document.getElementById('logInBox').style.display='block'" style="width:auto;">Log In</button>
+            </div>
+
+            <div id="logInBox" class="popUpBox">
+                <form class="popUpBoxContent animate" method="post">
+                    <div style="padding: 20px">
+                        <input type="text" placeholder="Enter Username" required>
+
+                        <input type="password" placeholder="Enter Password" required>
+
+                        <button type="submit">Log In</button>
+                        <button type="button"><a  href="createAccount.html" style="text-decoration: none; color: white;">Create an account</a></button>
+                        <input type="checkbox"> Remember me
+                    </div>
+
+                    <div class="boxLower">
+                        <button type="button" onclick="document.getElementById('logInBox').style.display='none'" class="cancelButton">Cancel</button>
+                        <div style="float: right; padding-top: 16px;">
+                            <a href="#">Forgot password?</a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </section>
 
