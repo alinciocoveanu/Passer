@@ -8,14 +8,18 @@
         <link rel="stylesheet" href="./css/style.css">
     </head>
     <body>
-        <header>
-            <div class="container">
+        <header style="min-height: 100px">
+            <div class="container" id="enervant">
                 <div id="branding">
                     <a href="index.html">
                         <img src="images/logo_transparent.png">
                     </a>
                 </div>
+
+            </div>
+            <div id="drop-down">
                 <nav>
+                    <!--
                     <div class="account">
                         <li><a>username</a>
                             <ul>
@@ -24,8 +28,15 @@
                             </ul>
                         </li>
                     </div>
+                    -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">Username</button>
+                        <div class="dropdownContent">
+                            <a href="#">Account settings</a>
+                            <a href="#">Log out</a>
+                        </div>
+                    </div>
                 </nav>
-
             </div>
         </header>
 
@@ -38,7 +49,9 @@
             </ul>
         </div>
         <div id="rigthBox">
-            <button type="submit">Add</button>
+            <div class="container">
+                <button type="submit">Add</button>
+            </div>
         </div>
 
     </body>
