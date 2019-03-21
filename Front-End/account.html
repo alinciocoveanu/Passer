@@ -48,12 +48,28 @@
         </div>
         <div id="rigthBox">
             <div class="rButton">
-                <button id="addButton" type="submit">Add</button>
-            </div>
-            <div id="itemList">
-            </div>
+                <button onclick="document.getElementById('addBox').style.display='block'" id="addButton" type="submit">Add</button>
+            <div id="addBox" class="popUpBox">
+                <form class="popUpBoxContent animate" method="post">
+                    <div style="padding: 20px">
+                        <input type="text" placeholder="Enter Webpage URL" required>
 
+                        <input type="text" placeholder="Enter Username" required>
+
+                        <input type="password" placeholder="Enter Password" required>
+
+                        <button type="submit">Add</button>
+                    </div>
+
+                    <div class="boxLower">
+                        <button type="button" onclick="document.getElementById('addBox').style.display='none'" class="cancelButton">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
+        <div id="itemList">
+        </div>
+    </div>
 
     </body>
 </html>
