@@ -78,6 +78,7 @@ header a:hover {
 
 #showcase {
     min-height: 400px;
+    margin-bottom: 20px;
     background: url("../images/logo-test.png") no-repeat 0 -400px;
     text-align: center;
     color: #ffffff;
@@ -106,6 +107,12 @@ header a:hover {
 
 #boxes .box img {
     width: 100px;
+}
+
+#boxes .container {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
 }
 
 footer {
@@ -285,9 +292,12 @@ button:hover{
 }
 
 #leftMenu {
+    display: flex;
+    flex-flow: column wrap;
     float: left;
     width: 10%;
-    height: 620px;
+    min-width: fit-content;
+    min-height: -webkit-fill-available;
     background-color: #cccccc;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -311,18 +321,19 @@ button:hover{
 }
 
 #rigthBox {
+    display: flex;
     float: right;
     width: 90%;
 }
 
-#rigthBox .container button {
+#addButton {
     text-align: center;
     font-size: 20px;
-    position: absolute;
+    position: fixed;
     background-color: white;
     color: black;
-    padding: 10px;
-    bottom: 0px;
+    right: 50px;
+    bottom: 50px;
     border-radius: 50%;
     width: 80px;
     height: 80px;
@@ -332,7 +343,11 @@ button:hover{
     -webkit-transition-duration: 0.4s;
 }
 
-#rigthBox .container button:hover {
+#addButton:hover {
     background-color: #05476B;
     color: white;
+}
+
+.leftMenuButton {
+    background-color: initial;
 }

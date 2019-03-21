@@ -11,7 +11,7 @@
         <header style="min-height: 100px">
             <div class="container" id="enervant">
                 <div id="branding">
-                    <a href="index.html">
+                    <a class="logo">
                         <img src="images/logo_transparent.png">
                     </a>
                 </div>
@@ -33,7 +33,7 @@
                         <button class="dropdown-button">Username</button>
                         <div class="dropdownContent">
                             <a href="#">Account settings</a>
-                            <a href="#">Log out</a>
+                            <a href="index.html">Log out</a>
                         </div>
                     </div>
                 </nav>
@@ -41,17 +41,18 @@
         </header>
 
         <div id="leftMenu">
-            <ul>
-                <li><a href="#">Web Pages</a></li>
-                <li><a href="#">Online banking</a></li>
-                <li><a href="#">Emails</a></li>
-                <li><a href="#">Wi-Fi networks</a></li>
-            </ul>
+            <button class="leftMenuButton" href="#">Web Pages</button>
+            <button class="leftMenuButton" href="#">Online banking</button>
+            <button class="leftMenuButton" href="#">Emails</button>
+            <button class="leftMenuButton" href="#">Wi-Fi networks</button>
         </div>
         <div id="rigthBox">
-            <div class="container">
-                <button type="submit">Add</button>
+            <div class="rButton">
+                <button id="addButton" type="submit">Add</button>
             </div>
+            <div id="itemList">
+            </div>
+
         </div>
 
     </body>
