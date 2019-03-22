@@ -352,3 +352,8 @@ button:hover{
 .leftMenuButton {
     background-color: initial;
 }
+
+#logBut{
+    display: flex;
+    justify-content: center;
+}
