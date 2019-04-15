@@ -1,11 +1,65 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Passer</title>
-</head>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
 
-<body>
+        <title>Passer | My Account</title>
+        <link rel="stylesheet" href="./css/style.css">
+    </head>
+    <body>
+        <header style="min-height: 100px">
+            <div class="container" id="enervant">
+                <div id="branding">
+                    <a class="logo">
+                        <img src="images/logo_transparent.png" alt="logo_transparent">
+                    </a>
+                </div>
 
-</body>
+            </div>
+            <div id="drop-down">
+                <nav>
+                    <div class="dropdown">
+                        <button class="dropdown-button">Username</button>
+                        <div class="dropdownContent">
+                            <a href="#">Account settings</a>
+                            <a href="index.html">Log out</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <div id="leftMenu">
+            <button class="leftMenuButton">Web Pages</button>
+            <button class="leftMenuButton">Online banking</button>
+            <button class="leftMenuButton">Emails</button>
+            <button class="leftMenuButton">Wi-Fi networks</button>
+        </div>
+        <div id="rigthBox">
+            <div class="rButton">
+                <button onclick="document.getElementById('addBox').style.display='block'" id="addButton" type="submit">Add</button>
+            <div id="addBox" class="popUpBox">
+                <form class="popUpBoxContent animate" method="post">
+                    <div style="padding: 20px">
+                        <input type="text" placeholder="Enter Webpage URL" required>
+
+                        <input type="text" placeholder="Enter Username" required>
+
+                        <input type="password" placeholder="Enter Password" required>
+
+                        <button type="submit">Add</button>
+                    </div>
+
+                    <div class="boxLower">
+                        <button type="button" onclick="document.getElementById('addBox').style.display='none'" class="cancelButton">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="itemList">
+        </div>
+    </div>
+
+    </body>
 </html>

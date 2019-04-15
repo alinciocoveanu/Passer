@@ -13,20 +13,19 @@ ul {
 
 .container {
     width: 100%;
+    margin: auto;
+    overflow: hidden;
 }
 
-/*
-.login-button {
-    height: 38px;
-    background: #1872a4;
-    border: 0;
-    padding-left: 20px;
-    padding-right: 20px;
-    color: #ffffff;
-    text-decoration: none;
-    text-transform: capitalize;
-    font-size: 30px;1
-}*/
+#enervant{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#drop-down{
+    float: right;
+}
 
 header {
     background: #5C9FC4;
@@ -39,7 +38,6 @@ header {
 header a {
     color: #ffffff;
     text-decoration: none;
-    text-transform: uppercase;
     font-size: 16px;
 }
 
@@ -79,6 +77,7 @@ header a:hover {
 
 #showcase {
     min-height: 400px;
+    margin-bottom: 20px;
     background: url("../images/logo-test.png") no-repeat 0 -400px;
     text-align: center;
     color: #ffffff;
@@ -100,13 +99,19 @@ header a:hover {
 
 #boxes .box {
     float: left;
-    width: 32%;
+    width: 45%;
     padding: 10px;
     text-align: center;
 }
 
 #boxes .box img {
     width: 100px;
+}
+
+#boxes .container {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
 }
 
 footer {
@@ -116,8 +121,6 @@ footer {
     background-color: #5C9FC4;
     text-align: center;
 }
-
-<!--  -->
 
 /* Background of the pop up box */
 .popUpBox {
@@ -145,8 +148,9 @@ footer {
     padding-left: 20px;
     padding-right: 20px;
 }
-#login input[type=text], #login input[type=password] {
 
+#login input[type=text], #login input[type=password], 
+#addBox input[type=text], #addBox input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -164,8 +168,24 @@ footer {
     box-sizing: content-box;
 }
 
+button {
+    background-color: #1872a4;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
 button:hover{
     opacity: 0.7;
+}
+
+.cancelButton {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
 }
 
 /* Add zoom animation */
@@ -203,4 +223,106 @@ button:hover{
     margin-left: 20%;
     border: 1px solid gray;
     border-radius: 10px;
+}
+
+.dropdown{
+    position: relative;
+    display: inline-block;
+    padding-right: 20px;
+}
+
+.dropdown-button{
+    background-color: #05476B;
+    margin: unset;
+    padding: unset;
+    width: 200px;
+    height: 40px;
+    font-size: 15px;
+}
+
+.dropdownContent{
+    position: absolute;
+    display: none;
+    width: 200px;
+    height: 80px;
+    background-color: #05476B;
+    opacity: .8;
+    line-height: 40px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.dropdownContent a {
+    color: white;
+    display: block;
+}
+
+.dropdown:hover .dropdownContent {
+    display: block;
+}
+
+#leftMenu {
+    display: flex;
+    flex-flow: column wrap;
+    float: left;
+    width: 10%;
+    min-width: fit-content;
+    min-height: -webkit-fill-available;
+    background-color: #cccccc;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#leftMenu ul {
+    padding: 10% 0 0 10%;
+    list-style: none;
+}
+
+#leftMenu ul a {
+    font-size: 18px;
+    text-decoration: none;
+    color: #5C9FC4;
+}
+
+#leftMenu ul a:hover {
+    text-decoration: none;
+    color: #05476B;
+}
+
+#rigthBox {
+    display: flex;
+    float: right;
+    width: 90%;
+}
+
+#addButton {
+    text-align: center;
+    font-size: 20px;
+    position: fixed;
+    background-color: white;
+    color: black;
+    right: 50px;
+    bottom: 50px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    border: 2px solid #05476B;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    -webkit-transition-duration: 0.4s;
+}
+
+#addButton:hover {
+    background-color: #05476B;
+    color: white;
+}
+
+.leftMenuButton {
+    background-color: initial;
+}
+
+#logBut{
+    display: flex;
+    justify-content: center;
 }
