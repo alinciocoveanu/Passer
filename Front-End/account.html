@@ -36,6 +36,18 @@
             <button class="leftMenuButton">Emails</button>
             <button class="leftMenuButton">Wi-Fi networks</button>
         </div>
+
+        <div id="listItems">
+            <div class="custom-select">
+                  <select>
+                    <option value="0">Order by</option>
+                    <option value="domain">Domain</option>
+                    <option value="strength">Password Strength</option>
+                    <option value="freq">Frequency</option>
+                </select>
+            </div>
+        </div>
+
         <div id="rigthBox">
             <div class="rButton">
                 <button onclick="document.getElementById('addBox').style.display='block'" id="addButton" type="submit">Add</button>
