@@ -43,7 +43,6 @@ header a {
 
 
 header li {
-    float: left;
     display: inline;
     padding: 0 20px 0 20px;
 }
@@ -266,12 +265,8 @@ button:hover{
     flex-flow: column wrap;
     float: left;
     width: 10%;
-    min-width: fit-content;
-    min-height: -webkit-fill-available;
-    background-color: #cccccc;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+    height: 100vh;
+    background-color: #88959E;
 }
 
 #leftMenu ul {
@@ -291,7 +286,6 @@ button:hover{
 }
 
 #rigthBox {
-    display: flex;
     float: right;
     width: 90%;
 }
@@ -326,7 +320,6 @@ button:hover{
     display: flex;
     justify-content: center;
 }
-
 .custom-select {
     position: relative;
     font-family: Arial;
@@ -336,4 +329,32 @@ button:hover{
   
 .custom-select select {
     display: none;
+}
+
+.passItems ul{
+    position: relative;
+    margin: 10px auto 0;
+    padding: 20px;
+}
+
+.passItems ul li{
+    display: flex;
+    height: 25px;
+    background: rgba(75, 74, 74, 0.1);
+    padding: 10px 20px;
+    color: rgb(0, 0, 0);
+    margin: 5px 0;
+    transition: .5s;
+}
+.passItems ul li span:nth-child(1)
+{
+    width: 10%;
+}
+.passItems ul li span:nth-child(2)
+{
+    width: 80%;
+}
+.passItems ul li:hover
+{
+    opacity: 0.5;
 }
