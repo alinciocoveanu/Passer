@@ -39,27 +39,48 @@
         <div id="rigthBox">
             <div class="rButton">
                 <button onclick="document.getElementById('addBox').style.display='block'" id="addButton" type="submit">Add</button>
-            <div id="addBox" class="popUpBox">
-                <form class="popUpBoxContent animate" method="post">
-                    <div style="padding: 20px">
-                        <input type="text" placeholder="Enter Webpage URL" required>
+                <div id="addBox" class="popUpBox">
+                    <form class="popUpBoxContent animate" method="post">
+                        <div style="padding: 20px">
+                            <input type="text" placeholder="Enter Webpage URL" required>
 
-                        <input type="text" placeholder="Enter Username" required>
+                            <input type="text" placeholder="Enter Username" required>
 
-                        <input type="password" placeholder="Enter Password" required>
+                            <input type="password" placeholder="Enter Password" required>
 
-                        <button type="submit">Add</button>
-                    </div>
+                            <button type="submit">Add</button>
+                        </div>
 
-                    <div class="boxLower">
-                        <button type="button" onclick="document.getElementById('addBox').style.display='none'" class="cancelButton">Cancel</button>
-                    </div>
-                </form>
+                        <div class="boxLower">
+                            <button type="button" onclick="document.getElementById('addBox').style.display='none'" class="cancelButton">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="passItems">
+                    <ul>
+                        <li>
+                            <span class="number">1</span>
+                            <span class="title">Google</span>
+                            <span class="username">TestUser</span>
+                        </li>
+                        <li>
+                            <span class="number">2</span>
+                            <span class="title">Yahoo</span>
+                            <span class="username">TestUser</span>
+                        </li>
+                        <li>
+                            <span class="number">3</span>
+                            <span class="title">Facebook</span>
+                            <span class="username">TestUser</span>
+                        </li>
+                        <li>
+                            <span class="number">4</span>
+                            <span class="title">Youtube</span>
+                            <span class="username">TestUser</span>
+                        </li>
+                    </ul>
             </div>
         </div>
-        <div id="itemList">
-        </div>
-    </div>
-
     </body>
 </html>
