@@ -37,18 +37,19 @@
             <button class="leftMenuButton">Wi-Fi networks</button>
         </div>
 
-        <div id="listItems">
+        <div id="rigthBox">
+
             <div class="custom-select">
-                  <select>
-                    <option value="0">Order by</option>
+                <label>Group by</label>
+                <select title="Order by">
+                    <option value="domain">Title (A-Z)</option>
+                    <option value="domain">Title (Z-A)</option>
                     <option value="domain">Domain</option>
                     <option value="strength">Password Strength</option>
                     <option value="freq">Frequency</option>
                 </select>
             </div>
-        </div>
 
-        <div id="rigthBox">
             <div class="rButton">
                 <button onclick="document.getElementById('addBox').style.display='block'" id="addButton" type="submit">Add</button>
                 <div id="addBox" class="popUpBox">
