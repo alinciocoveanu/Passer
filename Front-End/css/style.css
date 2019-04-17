@@ -242,6 +242,7 @@ button:hover{
 .dropdownContent{
     position: absolute;
     display: none;
+    z-index: 9999;
     width: 200px;
     height: 80px;
     background-color: #05476B;
@@ -324,11 +325,27 @@ button:hover{
     position: relative;
     font-family: Arial;
     display: flex;
-    justify-content: end;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding-top: 20px;
+    padding-left: 20px;
 }
-  
+
+.custom-select label {
+    align-self: center;
+    padding-right: 10px;
+    font-size: 16px;
+}
+
 .custom-select select {
-    display: none;
+
+    padding: 5px 35px 5px 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    height: 34px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .passItems ul{
