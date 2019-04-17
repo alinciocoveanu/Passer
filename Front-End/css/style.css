@@ -359,19 +359,28 @@ button:hover{
     height: 25px;
     background: rgba(75, 74, 74, 0.1);
     padding: 10px 20px;
+    padding-right: 0%;
     color: rgb(0, 0, 0);
     margin: 5px 0;
     transition: .5s;
 }
-.passItems ul li span:nth-child(1)
-{
-    width: 10%;
-}
-.passItems ul li span:nth-child(2)
-{
-    width: 80%;
-}
 .passItems ul li:hover
 {
     opacity: 0.5;
+}
+.delete, .edit{
+    display: flex;
+    width: 5%;  
+}
+.passItems ul li span:nth-child(1){
+    width: 30%;
+}
+.passItems ul li span:nth-child(2){
+    width: 60%;
+}
+.passItems ul li span:nth-child(3){
+    width: 5%;
+}
+.passItems ul li span:nth-child(4){
+    width: 5%;
 }
