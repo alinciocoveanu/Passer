@@ -24,4 +24,4 @@ Controller:
 UserController - functionalitati: inregistrare, logare, schimbare parola(prin trimitere mail)
 ItemController - functionalitati: adaugare, stergere, update + generator parole sigure + export date (format: CSV/JSON/XML)
 
-![Diagrama UML](https://github.com/alinciocoveanu/Passer/blob/master/Passer.png)
+![Diagrama UML](https://github.com/alinciocoveanu/Passer/blob/master/Passer1.png)
