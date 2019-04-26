@@ -36,7 +36,20 @@
             <button class="leftMenuButton">Emails</button>
             <button class="leftMenuButton">Wi-Fi networks</button>
         </div>
+
         <div id="rigthBox">
+
+            <div class="custom-select">
+                <label>Group by</label>
+                <select title="Order by">
+                    <option value="domain">Title (A-Z)</option>
+                    <option value="domain">Title (Z-A)</option>
+                    <option value="domain">Domain</option>
+                    <option value="strength">Password Strength</option>
+                    <option value="freq">Frequency</option>
+                </select>
+            </div>
+
             <div class="rButton">
                 <button onclick="document.getElementById('addBox').style.display='block'" id="addButton" type="submit">Add</button>
                 <div id="addBox" class="popUpBox">
@@ -60,24 +73,28 @@
             <div class="passItems">
                     <ul>
                         <li>
-                            <span class="number">1</span>
                             <span class="title">Google</span>
                             <span class="username">TestUser</span>
+                            <span class="edit"><img src="images/edit.png" alt="edit_icon"></span>
+                            <span class="delete"><img src="images/delete.png" alt="delete_icon"></span>
                         </li>
                         <li>
-                            <span class="number">2</span>
                             <span class="title">Yahoo</span>
                             <span class="username">TestUser</span>
+                            <span class="edit"><img src="images/edit.png" alt="edit_icon"></span>
+                            <span class="delete"><img src="images/delete.png" alt="delete_icon"></span>
                         </li>
                         <li>
-                            <span class="number">3</span>
                             <span class="title">Facebook</span>
                             <span class="username">TestUser</span>
+                            <span class="edit"><img src="images/edit.png" alt="edit_icon"></span>
+                            <span class="delete"><img src="images/delete.png" alt="delete_icon"></span>
                         </li>
                         <li>
-                            <span class="number">4</span>
                             <span class="title">Youtube</span>
                             <span class="username">TestUser</span>
+                            <span class="edit"><img src="images/edit.png" alt="edit_icon"></span>
+                            <span class="delete"><img src="images/delete.png" alt="delete_icon"></span>
                         </li>
                     </ul>
             </div>

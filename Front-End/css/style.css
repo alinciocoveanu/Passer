@@ -242,6 +242,7 @@ button:hover{
 .dropdownContent{
     position: absolute;
     display: none;
+    z-index: 9999;
     width: 200px;
     height: 80px;
     background-color: #05476B;
@@ -320,6 +321,32 @@ button:hover{
     display: flex;
     justify-content: center;
 }
+.custom-select {
+    position: relative;
+    font-family: Arial;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+.custom-select label {
+    align-self: center;
+    padding-right: 10px;
+    font-size: 16px;
+}
+
+.custom-select select {
+
+    padding: 5px 35px 5px 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    height: 34px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
 
 .passItems ul{
     position: relative;
@@ -332,19 +359,28 @@ button:hover{
     height: 25px;
     background: rgba(75, 74, 74, 0.1);
     padding: 10px 20px;
+    padding-right: 0%;
     color: rgb(0, 0, 0);
     margin: 5px 0;
     transition: .5s;
 }
-.passItems ul li span:nth-child(1)
-{
-    width: 10%;
-}
-.passItems ul li span:nth-child(2)
-{
-    width: 80%;
-}
 .passItems ul li:hover
 {
     opacity: 0.5;
+}
+.delete, .edit{
+    display: flex;
+    width: 5%;  
+}
+.passItems ul li span:nth-child(1){
+    width: 30%;
+}
+.passItems ul li span:nth-child(2){
+    width: 60%;
+}
+.passItems ul li span:nth-child(3){
+    width: 5%;
+}
+.passItems ul li span:nth-child(4){
+    width: 5%;
 }
