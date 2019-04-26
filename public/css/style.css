@@ -148,6 +148,16 @@ footer {
     padding-right: 20px;
 }
 
+.popUpBox p {
+    display: flex;
+    justify-content: center;
+    color: red;
+}
+
+#logInBox{
+    display: none;
+}
+
 #login input[type=text], #login input[type=password], 
 #addBox input[type=text], #addBox input[type=password] {
     width: 100%;

@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    if(isset($_SESSION['user']))
+        header("Location:account.php")
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -5,21 +11,21 @@
         <meta name="viewport" content="width=device-width">
 
         <title>Passer | Welcome</title>
-        <link rel="stylesheet" href="./css/style.css">
+        <link rel="stylesheet" href="/Passer/public/css/style.css">
     </head>
 
     <body>
         <header>
             <div class="container">
                 <div id="branding">
-                    <a href="index.html">
-                        <img src="images/logo_transparent.png" alt="logo transparent">
+                    <a href="index.php">
+                        <img src="/Passer/public/images/logo_transparent.png" alt="logo transparent">
                     </a>
                 </div>
                 <nav>
                     <ul>
-                        <li class="current"><a href="index.html">About</a></li>
-                        <li><a href="index.html">Contact</a></li>
+                        <li class="current"><a href="index.php">About</a></li>
+                        <li><a href="index.php">Contact</a></li>
                     </ul>
                 </nav>
             </div>
@@ -36,16 +42,18 @@
                 <!-- Log In button - opens the pop up box-->
                 <button onclick="document.getElementById('logInBox').style.display='block'" style="width:auto;">Log In</button>
             </div>
-
             <div id="logInBox" class="popUpBox">
-                <form class="popUpBoxContent animate" method="post" action="account.html">
+                <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php">
                     <div style="padding: 20px">
-                        <input type="text" placeholder="Enter Username" required>
+                        <?php if(@$_GET['err'] == 1) { ?>
+                        <p>Login Incorrect. Please try again.</p>
+                        <?php } ?>
+                        <input type="text" placeholder="Enter Username" name="username" required>
 
-                        <input type="password" placeholder="Enter Password" required>
+                        <input type="password" placeholder="Enter Password" name="password" required>
 
-                        <button type="submit">Log In</button>
-                        <button type="button" onclick="location.href='createAccount.html';">Create an account</button>
+                        <button type="submit" name="op" value="login">Log In</button>
+                        <button type="button" onclick="location.href='createAccount.php';">Create an account</button>
                         <input type="checkbox"> Remember me
                     </div>
 
@@ -62,31 +70,40 @@
         <section id="boxes">
             <div class="container">
                 <div class="box">
-                    <img src="images/safe-box-deposit-bank-storage-512.png" alt="logo_transparent">
+                    <img src="/Passer/public/images/safe-box-deposit-bank-storage-512.png" alt="logo_transparent">
                     <h3>Safe Storage</h3>
                     <p></p>
                 </div>
 
                 <div class="box">
-                    <img src="images/product_icon_passwordreset.png" alt="logo_transparent">
+                    <img src="/Passer/public/images/product_icon_passwordreset.png" alt="logo_transparent">
                     <h3>Generate strong passwords</h3>
                     <p></p>
                 </div>
 
                 <div class="box">
-                    <img src="images/digitalStorage.png" alt="logo_transparent">
+                    <img src="/Passer/public/images/digitalStorage.png" alt="logo_transparent">
                     <h3>Store digital records</h3>
                     <p></p>
                 </div>
 
                 <div class="box">
-                    <img src="images/share_PNG23.webp" alt="logo_transparent">
+                    <img src="/Passer/public/images/share_PNG23.webp" alt="logo_transparent">
                     <h3>Share effortlessly</h3>
                     <p></p>
                 </div>
 
             </div>
         </section>
+        
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            const param = params.get('err');
+            if(param == 1){
+                var elem = document.getElementById('logInBox');
+                elem.style.display = 'block';
+            }
+        </script>
 
         <footer>
             <p>Passer - Password Manager &copy; 2019</p>

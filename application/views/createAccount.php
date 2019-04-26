@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width">
 
     <title>Passer | Create Account</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="/Passer/public/css/style.css">
 </head>
 <body>
     <header>
         <div class="container">
             <div id="branding">
-                <a href="index.html">
-                    <img src="images/logo_transparent.png" alt="logo transparent">
+                <a href="index.php">
+                    <img src="/Passer/public/images/logo_transparent.png" alt="logo transparent">
                 </a>
             </div>
             <nav>
                 <ul>
-                    <li class="current"><a href="index.html">About</a></li>
-                    <li><a href="index.html">Contact</a></li>
+                    <li class="current"><a href="index.php">About</a></li>
+                    <li><a href="index.php">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -27,19 +27,19 @@
     <section id="formular">
         <div class="formular">
             <h3>Create an account</h3>
-            <form method="post" class="createFormular" action="account.html">
+            <form method="post" class="createFormular" action="account.php">
                 First name<br>
-                <input type="text" required><br>
+                <input type="text" name="firstName" required><br>
                 Last name<br>
-                <input type="text" required><br>
+                <input type="text" name="lastName" required><br>
                 Username<br>
-                <input type="text" required><br>
+                <input type="text" name="username" required><br>
                 Password<br>
-                <input type="password" required><br>
+                <input type="password" name="password" required><br>
                 Confirm password<br>
                 <input type="password" required><br>
                 <input type="checkbox" required>Do you agree with our terms and services?<br>
-                <button type="submit" style="width: 45%">Submit</button>
+                <button type="submit" name="op" value="register" style="width: 45%">Submit</button>
             </form>
         </div>
     </section>
