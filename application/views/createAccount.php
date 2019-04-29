@@ -27,22 +27,39 @@
     <section id="formular">
         <div class="formular">
             <h3>Create an account</h3>
-            <form method="post" class="createFormular" action="account.php">
-                First name<br>
-                <input type="text" name="firstName" required><br>
-                Last name<br>
-                <input type="text" name="lastName" required><br>
+            <form class="createFormular"
+                onsubmit="checkPass();" action="/Passer/public/actionPage.php" method="post">
+                <?php if(@$_GET['err'] == 1) { ?>
+                <p>User already exists. Please try again.</p>
+                <?php } ?>
+                E-mail<br>
+                <input type="text" name="email" required><br>
                 Username<br>
                 <input type="text" name="username" required><br>
                 Password<br>
-                <input type="password" name="password" required><br>
+                <input type="password" id="password" name="password" required><br>
                 Confirm password<br>
-                <input type="password" required><br>
+                <input type="password" id="confirm_password" required><br>
                 <input type="checkbox" required>Do you agree with our terms and services?<br>
+                <span id='message'></span><br>
                 <button type="submit" name="op" value="register" style="width: 45%">Submit</button>
             </form>
         </div>
     </section>
+
+    <script>
+        function checkPass() {
+            if (document.getElementById('password').value != document.getElementById('confirm_password').value) {
+                document.getElementById('message').style.color = 'red';
+                document.getElementById('message').innerHTML = 'Passwords must match';
+                event.preventDefault();
+                return false;
+            } else {
+                document.getElementById('message').innerHTML = '';
+                return true;
+            }
+        }
+    </script>
 
     <footer>
         <p>Passer - Password Manager &copy; 2019</p>
