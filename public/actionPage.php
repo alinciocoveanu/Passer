@@ -10,10 +10,8 @@ require_once(ROOT . DS . 'application' . DS . 'controllers' . DS . 'UsersControl
 switch($op) {
     case 'login':
         $userController = new UserController();
-        $username = $_POST['username'];
-        $password = $_POST['password'];
 
-        if($userController->logUser($username, $password)) {
+        if($userController->logUser($_POST['username'], $_POST['password'])) {
             header("Location:/Passer/application/views/account.php");
         } else
             header("Location:/Passer/application/views/index.php?err=1");
