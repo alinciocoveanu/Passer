@@ -26,11 +26,9 @@ switch($op) {
         break;
     case 'register':
         $userController = new UserController();
-        $username = $_POST['username'];
-        $password = $_POST['password'];    
-        $email = $_POST['email'];
+        $user = new UserModel($_POST['username'], $_POST['password'], $_POST['email']);
 
-        if($userController->createUser($username, $password, $email))
+        if($userController->createUser($user))
         {
             header("Location:/Passer/application/views/account.php");
         }
