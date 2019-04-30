@@ -4,14 +4,13 @@ define('ROOT', dirname(dirname(__FILE__)));
 
 require_once(ROOT . DS . 'application' . DS . 'models' . DS . 'UserModel.php');
 
-class UserController {
+class UsersController {
 
-    function __construct(){
+    public function __construct() {
         //
     }
 
-    function insertUser($user, $password, $email)
-    {
+    function insertUser($user, $password, $email) {
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
 
         $rezUser = mysqli_query($db, "insert into users(user_id, username, email) values ('NULL', '$user', '$email');");
@@ -72,7 +71,7 @@ class UserController {
         return $user;
     }
 
-    function createUser($user){
+    function createUser($user) {
         //check db
         if($this->insertUser($user->getUsername(), $user->getPassword(), $user->getEmail())) {
             //start the session for the user
