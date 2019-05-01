@@ -1,3 +1,15 @@
+<?php
+    define('DS', DIRECTORY_SEPARATOR);
+    define('ROOT', dirname(dirname(__FILE__)));
+    
+    require_once(ROOT . DS . 'models' . DS . 'UserModel.php');
+    session_start();
+    if(!isset($_SESSION['user'])){
+        header("Location:/Passer/application/views/index.php");
+    }else
+        $user = $_SESSION['user'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -5,14 +17,14 @@
         <meta name="viewport" content="width=device-width">
 
         <title>Passer | My Account</title>
-        <link rel="stylesheet" href="./css/style.css">
+        <link rel="stylesheet" href="/Passer/public/css/style.css">
     </head>
     <body>
         <header style="min-height: 100px">
             <div class="container" id="enervant">
                 <div id="branding">
                     <a class="logo">
-                        <img src="images/logo_transparent.png" alt="logo_transparent">
+                        <img src="/Passer/public/images/logo_transparent.png" alt="logo_transparent">
                     </a>
                 </div>
 
@@ -20,10 +32,12 @@
             <div id="drop-down">
                 <nav>
                     <div class="dropdown">
-                        <button class="dropdown-button">Username</button>
+                        <button class="dropdown-button"> 
+                            <?php print $user->getUsername(); ?>
+                        </button>
                         <div class="dropdownContent">
                             <a href="#">Account settings</a>
-                            <a href="index.html">Log out</a>
+                            <a href="/Passer/public/actionPage.php?op=logout">Log out</a>
                         </div>
                     </div>
                 </nav>
@@ -75,26 +89,26 @@
                         <li>
                             <span class="title">Google</span>
                             <span class="username">TestUser</span>
-                            <span class="edit"><img src="images/edit.png"></span>
-                            <span class="delete"><img src="images/delete.png"></span>
+                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
+                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
                         </li>
                         <li>
                             <span class="title">Yahoo</span>
                             <span class="username">TestUser</span>
-                            <span class="edit"><img src="images/edit.png"></span>
-                            <span class="delete"><img src="images/delete.png"></span>
+                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
+                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
                         </li>
                         <li>
                             <span class="title">Facebook</span>
                             <span class="username">TestUser</span>
-                            <span class="edit"><img src="images/edit.png"></span>
-                            <span class="delete"><img src="images/delete.png"></span>
+                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
+                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
                         </li>
                         <li>
                             <span class="title">Youtube</span>
                             <span class="username">TestUser</span>
-                            <span class="edit"><img src="images/edit.png"></span>
-                            <span class="delete"><img src="images/delete.png"></span>
+                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
+                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
                         </li>
                     </ul>
             </div>
