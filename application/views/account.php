@@ -1,13 +1,22 @@
 <?php
-    define('DS', DIRECTORY_SEPARATOR);
-    define('ROOT', dirname(dirname(__FILE__)));
     
-    require_once(ROOT . DS . 'models' . DS . 'UserModel.php');
+    define('DS6', DIRECTORY_SEPARATOR);
+    define('ROOT6', dirname(dirname(__FILE__)));
+    
+    require_once(ROOT6 . DS6 . 'controllers' . DS6 . 'UsersController.php');
+    require_once(ROOT6 . DS6 . 'controllers' . DS6 . 'ItemsController.php');
+    require_once(ROOT6 . DS6 . 'models' . DS6 . 'UserModel.php');
     session_start();
+
+    
     if(!isset($_SESSION['user'])){
         header("Location:/Passer/application/views/index.php");
-    }else
+    } else {
         $user = $_SESSION['user'];
+    }
+
+    $usersController = new UsersController();
+    $itemsController = new ItemsController($usersController->getUserId($user->getUsername()));
 ?>
 
 <!DOCTYPE html>
@@ -44,20 +53,19 @@
             </div>
         </header>
 
-        <div id="leftMenu">
+        <!-- <div id="leftMenu">
             <button class="leftMenuButton">Web Pages</button>
             <button class="leftMenuButton">Online banking</button>
             <button class="leftMenuButton">Emails</button>
             <button class="leftMenuButton">Wi-Fi networks</button>
-        </div>
+        </div> -->
 
-        <div id="rigthBox">
-
+        <div id="rightBox">
             <div class="custom-select">
                 <label>Group by</label>
                 <select title="Order by">
-                    <option value="domain">Title (A-Z)</option>
-                    <option value="domain">Title (Z-A)</option>
+                    <option value="titleAZ">Title (A-Z)</option>
+                    <option value="titleZA">Title (Z-A)</option>
                     <option value="domain">Domain</option>
                     <option value="strength">Password Strength</option>
                     <option value="freq">Frequency</option>
@@ -86,30 +94,14 @@
             </div>
             <div class="passItems">
                     <ul>
-                        <li>
-                            <span class="title">Google</span>
-                            <span class="username">TestUser</span>
-                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
-                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
-                        </li>
-                        <li>
-                            <span class="title">Yahoo</span>
-                            <span class="username">TestUser</span>
-                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
-                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
-                        </li>
-                        <li>
-                            <span class="title">Facebook</span>
-                            <span class="username">TestUser</span>
-                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
-                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
-                        </li>
-                        <li>
-                            <span class="title">Youtube</span>
-                            <span class="username">TestUser</span>
-                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
-                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
-                        </li>
+                        <?php for ($i = 0 ; $i < 40 ; $i++): ?>
+                            <li>
+                                <span class="title"><?php echo "title " . $i; ?></span>
+                                <span class="username"><?php echo "username " . $i; ?></span>
+                                <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
+                                <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
+                            </li>
+                        <?php endfor; ?>
                     </ul>
             </div>
         </div>

@@ -1,8 +1,8 @@
 <?php
-define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', dirname(dirname(__FILE__)));
+define('DS2', DIRECTORY_SEPARATOR);
+define('ROOT2', dirname(dirname(__FILE__)));
 
-require_once(ROOT . DS . 'application' . DS . 'models' . DS . 'UserModel.php');
+require_once(ROOT2 . DS2 . 'models' . DS2 . 'UserModel.php');
 
 class UsersController {
 
@@ -10,7 +10,23 @@ class UsersController {
         //
     }
 
-    function insertUser($user, $password, $email) {
+    public function getUserId($username) {
+        $db = mysqli_connect("localhost", "root", "", "aplicatietw");
+
+        $myQuery = mysqli_query($db, "select user_id from users where username = '$username';");
+
+        if($myQuery == false) {
+            return false;
+        }
+
+        $id = mysqli_fetch_array($myQuery);
+        $id = $id['user_id'];
+
+        mysqli_close($db);
+        return $id;
+    }
+
+    private function insertUser($user, $password, $email) {
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
 
         $rezUser = mysqli_query($db, "insert into users(user_id, username, email) values ('NULL', '$user', '$email');");
@@ -32,7 +48,7 @@ class UsersController {
         return true;
     }
 
-    function authentificate($user, $pass) {
+    private function authenticate($user, $pass) {
         //connect db
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
 
@@ -71,7 +87,7 @@ class UsersController {
         return $user;
     }
 
-    function createUser($user) {
+    public function createUser($user) {
         //check db
         if($this->insertUser($user->getUsername(), $user->getPassword(), $user->getEmail())) {
             //start the session for the user
@@ -83,9 +99,9 @@ class UsersController {
         return false;
     }
 
-    function logUser($username, $password) {
+    public function logUser($username, $password) {
         //check db
-        $rez = $this->authentificate($username, $password);
+        $rez = $this->authenticate($username, $password);
         if($rez != false) {
             //start the session for the user
             session_start();
@@ -96,7 +112,7 @@ class UsersController {
         return false;
     }
 
-    function logout() {
+    public function logout() {
         session_start();
         session_destroy();
     }
