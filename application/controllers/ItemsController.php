@@ -1,8 +1,8 @@
 <?php
-define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', dirname(dirname(__FILE__)));
+define('DS1', DIRECTORY_SEPARATOR);
+define('ROOT1', dirname(dirname(__FILE__)));
 
-require_once(ROOT . DS . 'application' . DS . 'models' . DS . 'ItemModel.php');
+require_once(ROOT1 . DS1 . 'models' . DS1 . 'ItemModel.php');
 
 class ItemsController {
     
@@ -15,7 +15,7 @@ class ItemsController {
     public function getAllItems() {
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
 
-        $getQuerry = mysqli_query($db, "select * from webpageitems where uid = " . $this->uid " order by title asc")
+        $getQuerry = mysqli_query($db, "select * from webpageitems where uid = " . $this->uid . " order by title asc")
                     or die("Failed to query database: " . mysqli_error($db));
 
         if($getQuerry == false) {
@@ -38,7 +38,7 @@ class ItemsController {
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
 
         $deleteQuerry = mysqli_query("delete from webpageitems where item_id = " . $id)
-                        or die("Failed to delete from database: ", . mysqli_error($db));
+                        or die("Failed to delete from database: " . mysqli_error($db));
 
         return $deleteQuerry;
     }

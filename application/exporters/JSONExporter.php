@@ -1,9 +1,9 @@
 <?php
     // include interface file
-    define('DS', DIRECTORY_SEPARATOR);
-    define('ROOT', dirname(dirname(__FILE__)));
+    define('DS4', DIRECTORY_SEPARATOR);
+    define('ROOT4', dirname(dirname(__FILE__)));
 
-    require_once(ROOT . DS . 'application' . DS . 'exporters' . DS . 'IExporter.php');
+    require_once(ROOT4 . DS4 . 'exporters' . DS4 . 'IExporter.php');
 
     class JSONExporter implements IExporter {
         

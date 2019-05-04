@@ -1,8 +1,11 @@
 <?php
-    define('DS', DIRECTORY_SEPARATOR);
-    define('ROOT', dirname(dirname(__FILE__)));
     
-    require_once(ROOT . DS . 'models' . DS . 'UserModel.php');
+    define('DS6', DIRECTORY_SEPARATOR);
+    define('ROOT6', dirname(dirname(__FILE__)));
+    
+    require_once(ROOT6 . DS6 . 'controllers' . DS6 . 'UsersController.php');
+    require_once(ROOT6 . DS6 . 'controllers' . DS6 . 'ItemsController.php');
+    require_once(ROOT6 . DS6 . 'models' . DS6 . 'UserModel.php');
     session_start();
 
     
@@ -12,7 +15,8 @@
         $user = $_SESSION['user'];
     }
 
-    $itemsController = new ItemsController($user);
+    $usersController = new UsersController();
+    $itemsController = new ItemsController($usersController->getUserId($user->getUsername()));
 ?>
 
 <!DOCTYPE html>
@@ -49,15 +53,14 @@
             </div>
         </header>
 
-        <div id="leftMenu">
+        <!-- <div id="leftMenu">
             <button class="leftMenuButton">Web Pages</button>
             <button class="leftMenuButton">Online banking</button>
             <button class="leftMenuButton">Emails</button>
             <button class="leftMenuButton">Wi-Fi networks</button>
-        </div>
+        </div> -->
 
-        <div id="rigthBox">
-
+        <div id="rightBox">
             <div class="custom-select">
                 <label>Group by</label>
                 <select title="Order by">
@@ -91,15 +94,14 @@
             </div>
             <div class="passItems">
                     <ul>
-                        <?php $items = $itemsController->getAllItems();
-                         foreach ($items as $item): ?>
+                        <?php for ($i = 0 ; $i < 40 ; $i++): ?>
                             <li>
-                                <span class="title">Google</span>
-                                <span class="username">TestUser</span>
+                                <span class="title"><?php echo "title " . $i; ?></span>
+                                <span class="username"><?php echo "username " . $i; ?></span>
                                 <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
                                 <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
                             </li>
-                        <?php endforeach; ?>
+                        <?php endfor; ?>
                     </ul>
             </div>
         </div>

@@ -1,9 +1,9 @@
 <?php
     // include interface file
-    define('DS', DIRECTORY_SEPARATOR);
-    define('ROOT', dirname(dirname(__FILE__)));
+    define('DS5', DIRECTORY_SEPARATOR);
+    define('ROOT5', dirname(dirname(__FILE__)));
 
-    require_once(ROOT . DS . 'application' . DS . 'exporters' . DS . 'IExporter.php');
+    require_once(ROOT5 . DS5 . 'exporters' . DS5 . 'IExporter.php');
 
     class XMLExporter implements IExporter {
         

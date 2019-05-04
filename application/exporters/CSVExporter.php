@@ -1,9 +1,9 @@
 <?php
     // include interface file
-    define('DS', DIRECTORY_SEPARATOR);
-    define('ROOT', dirname(dirname(__FILE__)));
+    define('DS3', DIRECTORY_SEPARATOR);
+    define('ROOT3', dirname(dirname(__FILE__)));
 
-    require_once(ROOT . DS . 'application' . DS . 'exporters' . DS . 'IExporter.php');
+    require_once(ROOT3 . DS3 . 'exporters' . DS3 . 'IExporter.php');
 
     class CSVExporter implements IExporter {
 

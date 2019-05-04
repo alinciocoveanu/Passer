@@ -1,11 +1,11 @@
 <?php
-define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', dirname(dirname(__FILE__)));
+define('DS7', DIRECTORY_SEPARATOR);
+define('ROOT7', dirname(dirname(__FILE__)));
 
-require_once(ROOT . DS . 'application' . DS . 'models' . DS . 'UserModel.php');
-require_once(ROOT . DS . 'application' . DS . 'models' . DS . 'ItemModel.php');
-require_once(ROOT . DS . 'application' . DS . 'controllers' . DS . 'ItemsController.php');
-require_once(ROOT . DS . 'application' . DS . 'controllers' . DS . 'UsersController.php');
+require_once(ROOT7 . DS7 . 'application' . DS7 . 'models' . DS7 . 'UserModel.php');
+require_once(ROOT7 . DS7 . 'application' . DS7 . 'models' . DS7 . 'ItemModel.php');
+require_once(ROOT7 . DS7 . 'application' . DS7 . 'controllers' . DS7 . 'ItemsController.php');
+require_once(ROOT7 . DS7 . 'application' . DS7 . 'controllers' . DS7 . 'UsersController.php');
 
 @$op = $_REQUEST['op'];
 

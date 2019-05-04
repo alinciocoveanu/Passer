@@ -272,7 +272,7 @@ button:hover{
     display: block;
 }
 
-#leftMenu {
+/* #leftMenu {
     display: flex;
     flex-flow: column wrap;
     float: left;
@@ -295,11 +295,10 @@ button:hover{
 #leftMenu ul a:hover {
     text-decoration: none;
     color: #05476B;
-}
+} */
 
-#rigthBox {
-    float: right;
-    width: 90%;
+#rightBox {
+    max-width: 90%;
 }
 
 #addButton {
@@ -324,9 +323,9 @@ button:hover{
     color: white;
 }
 
-.leftMenuButton {
+/* .leftMenuButton {
     background-color: initial;
-}
+} */
 
 #logBut{
     display: flex;
@@ -370,7 +369,6 @@ button:hover{
     height: 25px;
     background: rgba(75, 74, 74, 0.1);
     padding: 10px 20px;
-    padding-right: 0%;
     color: rgb(0, 0, 0);
     margin: 5px 0;
     transition: .5s;
