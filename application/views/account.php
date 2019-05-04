@@ -4,10 +4,15 @@
     
     require_once(ROOT . DS . 'models' . DS . 'UserModel.php');
     session_start();
+
+    
     if(!isset($_SESSION['user'])){
         header("Location:/Passer/application/views/index.php");
-    }else
+    } else {
         $user = $_SESSION['user'];
+    }
+
+    $itemsController = new ItemsController($user);
 ?>
 
 <!DOCTYPE html>
@@ -56,8 +61,8 @@
             <div class="custom-select">
                 <label>Group by</label>
                 <select title="Order by">
-                    <option value="domain">Title (A-Z)</option>
-                    <option value="domain">Title (Z-A)</option>
+                    <option value="titleAZ">Title (A-Z)</option>
+                    <option value="titleZA">Title (Z-A)</option>
                     <option value="domain">Domain</option>
                     <option value="strength">Password Strength</option>
                     <option value="freq">Frequency</option>
@@ -86,30 +91,15 @@
             </div>
             <div class="passItems">
                     <ul>
-                        <li>
-                            <span class="title">Google</span>
-                            <span class="username">TestUser</span>
-                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
-                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
-                        </li>
-                        <li>
-                            <span class="title">Yahoo</span>
-                            <span class="username">TestUser</span>
-                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
-                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
-                        </li>
-                        <li>
-                            <span class="title">Facebook</span>
-                            <span class="username">TestUser</span>
-                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
-                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
-                        </li>
-                        <li>
-                            <span class="title">Youtube</span>
-                            <span class="username">TestUser</span>
-                            <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
-                            <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
-                        </li>
+                        <?php $items = $itemsController->getAllItems();
+                         foreach ($items as $item): ?>
+                            <li>
+                                <span class="title">Google</span>
+                                <span class="username">TestUser</span>
+                                <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
+                                <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
             </div>
         </div>
