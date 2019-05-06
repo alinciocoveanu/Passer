@@ -15,19 +15,14 @@ class ItemsController {
     public function getAllItems() {
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
 
-        $getQuerry = mysqli_query($db, "select * from webpageitems where uid = " . $this->uid . " order by title asc")
+        $getQuerry = mysqli_query($db, "select * from items where user_id = " . $this->uid . " order by title asc")
                     or die("Failed to query database: " . mysqli_error($db));
 
-        if($getQuerry == false) {
-            return false;
-        }
+        return $getQuerry;
+    }
+
+    public function addItem() {
         
-        // trebuie creat un array de rows
-        $result = mysql_fetch_array($getQuerry);
-
-        mysqli_close($db);
-
-        return $result;
     }
 
     public function getItemById($id) {
@@ -37,7 +32,7 @@ class ItemsController {
     public function deleteItem($id) {
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
 
-        $deleteQuerry = mysqli_query("delete from webpageitems where item_id = " . $id)
+        $deleteQuerry = mysqli_query("delete from items where item_id = " . $id)
                         or die("Failed to delete from database: " . mysqli_error($db));
 
         return $deleteQuerry;
@@ -51,7 +46,7 @@ class ItemsController {
     public function exportItems($type) {
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
         // set data
-        $dataQuery = mysqli_query($db, "select * from webpages where uid = " . $this->uid . "order by 1 asc");
+        $dataQuery = mysqli_query($db, "select * from items where user_id = " . $this->uid . "order by 1 asc");
 
         switch($type) {
             case "csv": CSVExporter::export($dataQuery);

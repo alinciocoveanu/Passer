@@ -94,14 +94,19 @@
             </div>
             <div class="passItems">
                     <ul>
-                        <?php for ($i = 0 ; $i < 40 ; $i++): ?>
+                        <?php $items = $itemsController->getAllItems();
+                        if(!$items) {
+                            // error handling
+                        } else 
+                            while ($row = mysqli_fetch_assoc($items)): ?>
                             <li>
-                                <span class="title"><?php echo "title " . $i; ?></span>
-                                <span class="username"><?php echo "username " . $i; ?></span>
+                                <span class="title"><?php echo $row['title']; ?></span>
+                                <span class="username"><?php echo $row['username']; ?></span>
                                 <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
                                 <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
                             </li>
-                        <?php endfor; ?>
+                        <?php
+                            endwhile; ?>
                     </ul>
             </div>
         </div>
