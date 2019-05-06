@@ -12,21 +12,24 @@
             //
         }
 
-        private function dataToJSON($data) {
-            $dbdata = array();
+        private function dataToJSON($dataQuery) {
+            $json_array = array();
 
-            while ( $row = $data->mysqli_fetch_assoc())  {
-	            $dbdata[] = $row;
+            while ( $row = mysqli_fetch_assoc($dataQuery)) {
+	            $json_array[] = $row;
             }
 
-            $json = json_encode($dbdata);
+            $json = json_encode($json_array);
             return $json;
         }
 
-        public function export($data) {
-            $json = $this->dataToJSON($data);
+        public function export($dataQuery) {
+            $json = $this->dataToJSON($dataQuery);
+            $json_filename = 'json_export_' . date('Y-m-d') . 'json';
 
             // export to json file
+            header('Content-type: application/json');
+            header("Content-Disposition: attachment; filename=" . $json_filename . "");
         }
     }
 

@@ -49,13 +49,14 @@ class ItemsController {
 
     //export CSV/JSON/XML
     public function exportItems($type) {
+        $db = mysqli_connect("localhost", "root", "", "aplicatietw");
         // set data
-        $data = null;
+        $dataQuery = mysqli_query($db, "select * from webpages where uid = " . $this->uid . "order by 1 asc");
 
         switch($type) {
-            case "csv": return CSVExporter::export($data);
-            case "json": return JSONExporter::export($data);
-            case "xml": return XMLExporter::export($data);
+            case "csv": CSVExporter::export($dataQuery);
+            case "json": JSONExporter::export($dataQuery);
+            case "xml": XMLExporter::export($dataQuery);
         }
     }
 }
