@@ -17,6 +17,16 @@
 
     $usersController = new UsersController();
     $itemsController = new ItemsController($usersController->getUserId($user->getUsername()));
+
+    if(isset($_POST['del_id'])) {
+        $itemId = $_POST['del_id'];
+        $itemsController->deleteItem($itemId);
+    }
+
+    if(isset($_POST['edit_id'])) {
+        $itemId = $_POST['edit_id'];
+        $itemsController->editItem($itemId);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -62,14 +72,17 @@
 
         <div id="rightBox">
             <div class="custom-select">
-                <label>Group by</label>
-                <select title="Order by">
-                    <option value="titleAZ">Title (A-Z)</option>
-                    <option value="titleZA">Title (Z-A)</option>
-                    <option value="domain">Domain</option>
-                    <option value="strength">Password Strength</option>
-                    <option value="freq">Frequency</option>
-                </select>
+                <label>Order by</label>
+                <form method="GET" action="account.php">
+                    <select name="orderType" title="Order by">
+                        <option value="titleAZ">Title (A-Z)</option>
+                        <option value="titleZA">Title (Z-A)</option>
+                        <option value="domain">Domain</option>
+                        <option value="strength">Password Strength</option>
+                        <option value="freq">Frequency</option>
+                    </select>
+                    <input type="submit" value="SORT">
+                </form>
             </div>
 
             <div class="rButton">
@@ -94,7 +107,12 @@
             </div>
             <div class="passItems">
                     <ul>
-                        <?php $items = $itemsController->getAllItems();
+                        <?php
+                        if(isset($_GET['orderType'])) {
+                            $items = $itemsController->getAllItems($_GET['orderType']);
+                        } else {
+                            $items = $itemsController->getAllItems("default");
+                        }
                         if(!$items) {
                             // error handling
                         } else 
@@ -102,8 +120,18 @@
                             <li>
                                 <span class="title"><?php echo $row['title']; ?></span>
                                 <span class="username"><?php echo $row['username']; ?></span>
-                                <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
-                                <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
+                                <form method="post" action="account.php">
+                                    <span class="edit">
+                                        <input type="hidden" name="edit_id" value="<?php echo $row['item_id']; ?>">
+                                        <input type="image" src="/Passer/public/images/edit.png" alt="submit" width="40" height="30">
+                                    </span>
+                                </form>
+                                <form method="post" action="account.php">
+                                    <span class="delete">
+                                        <input type="hidden" name="del_id" value="<?php echo $row['item_id']; ?>">
+                                        <input type="image" src="/Passer/public/images/delete.png" alt="submit" width="40" height="30">
+                                    </span>
+                                </form>
                             </li>
                         <?php
                             endwhile; ?>

@@ -12,27 +12,38 @@ class ItemsController {
         $this->uid = $userId;
     }
 
-    public function getAllItems() {
+    public function getAllItems($orderBy) {
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
 
-        $getQuerry = mysqli_query($db, "select * from items where user_id = " . $this->uid . " order by title asc")
+        $order = '';
+        switch($orderBy) {
+            case "titleAZ": $order = "title asc"; break;
+            case "titleZA": $order = "title desc"; break;
+            case "domain": $order = "SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(url, '/', 3), '://', -1), '/', 1), '?', 1)"; break;
+            case "strength": break; // create mysql function to get password strength http://www.passwordmeter.com/
+            case "freq": break;
+            default: $order = "title asc"; break;
+        }
+        
+        // check if query is ok
+        $getQuerry = mysqli_query($db, "select * from items where user_id = " . $this->uid . " AND SYSDATE() <= max_time order by " . $order)
                     or die("Failed to query database: " . mysqli_error($db));
 
         return $getQuerry;
     }
 
     public function addItem() {
-        
+        // add addItem logic
     }
 
     public function getItemById($id) {
-        //
+        // add edit logic
     }
 
     public function deleteItem($id) {
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
 
-        $deleteQuerry = mysqli_query("delete from items where item_id = " . $id)
+        $deleteQuerry = mysqli_query($db, "delete from items where item_id = " . $id)
                         or die("Failed to delete from database: " . mysqli_error($db));
 
         return $deleteQuerry;
