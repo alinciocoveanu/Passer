@@ -27,6 +27,12 @@
         $itemId = $_POST['edit_id'];
         $itemsController->editItem($itemId);
     }
+
+    
+    if(isset($_POST['title']) || isset($_POST['username']) || isset($_POST['password']) || isset($_POST['url']) || isset($_POST['comment']) || isset($_POST['maxTime'])) {
+        $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
+        $itemsController->addItem($item);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -88,13 +94,19 @@
             <div class="rButton">
                 <button onclick="document.getElementById('addBox').style.display='block'" id="addButton" type="submit">Add</button>
                 <div id="addBox" class="popUpBox">
-                    <form class="popUpBoxContent animate" method="post">
+                    <form class="popUpBoxContent animate" method="post" action="account.php">
                         <div style="padding: 20px">
-                            <input type="text" placeholder="Enter Webpage URL" required>
+                            <input type="text" placeholder="Enter Title" name="title" required>
 
-                            <input type="text" placeholder="Enter Username" required>
+                            <input type="text" placeholder="Enter Webpage URL" name="url" required>
 
-                            <input type="password" placeholder="Enter Password" required>
+                            <input type="text" placeholder="Enter Username" name="username" required>
+
+                            <input type="password" placeholder="Enter Password" name="password" required>
+
+                            <input type="text" placeholder="Comment / Description" name="comment" required>
+
+                            <label>Availabylity:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availabylity" required>
 
                             <button type="submit">Add</button>
                         </div>

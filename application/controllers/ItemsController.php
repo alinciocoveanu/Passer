@@ -21,7 +21,7 @@ class ItemsController {
             case "titleZA": $order = "title desc"; break;
             case "domain": $order = "SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(url, '/', 3), '://', -1), '/', 1), '?', 1)"; break;
             case "strength": break; // create mysql function to get password strength http://www.passwordmeter.com/
-            case "freq": break;
+            case "freq": $order = "frequency(password) desc"; break;
             default: $order = "title asc"; break;
         }
         
@@ -32,8 +32,20 @@ class ItemsController {
         return $getQuerry;
     }
 
-    public function addItem() {
-        // add addItem logic
+    public function addItem($itemModel) {
+        $db = mysqli_connect("localhost", "root", "", "aplicatietw");
+
+        $title = $itemModel->getTitle();
+        $username = $itemModel->getUsername();
+        $password = $itemModel->getPassword();
+        $url = $itemModel->getUrl();
+        $comment = $itemModel->getComment();
+        $max_time = $itemModel->getMaxTime();
+
+        $addQuery = mysqli_query($db, "insert into items(item_id, user_id, title, username, password, url, comment, max_time) values(NULL, '$this->uid', '$title', '$username', '$password', '$url', '$comment', '$max_time')")
+                    or die("Failed to query database: " . mysqli_error($db));
+
+        return $addQuery;
     }
 
     public function getItemById($id) {

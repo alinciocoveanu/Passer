@@ -5,8 +5,8 @@ class ItemModel {
 
     public function __construct($title, $username, $password, $url, $comment, $maxTime)
     {
-        $this->username = $username;
         $this->title = $title;
+        $this->username = $username;
         $this->password = $password;
         $this->url = $url;
         $this->comment = $comment;
