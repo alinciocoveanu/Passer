@@ -12,24 +12,40 @@
             //
         }
 
-        private function dataToXML($dataArray) {
-            $xml= "<?xml version=\"1.0\"?>\n";
-            $xml.= "\n";
+        private function dataToXML($dataQuery) {
+            $xml = "<?xml version=\"1.0\"?>\n";
+        
+            // root node
+            $xml .= "<items>\n";
 
-            for($r = 0; $r < mysqli_num_rows($data); $r++) {
-                $row = mysqli_fetch_assoc($data);
-                $xml = "\t\n" . $data . "";
+            // rows
+            while ($row = mysqli_fetch_assoc($dataQuery)) {    
+                $xml .= "\t<item>\n"; 
+                
+                $i = 0;
+                // cells
+                foreach ($row as $cell) {
+                    $col_name = mysqli_field_name($dataQuery, $i);
+                    // creates the "<tag>contents</tag>" representing the column
+                    $xml .= "\t\t<" . $col_name . ">" . $cell . "</" . $col_name . ">\n";
+                    $i++;
+                }
+
+                $xml .= "\t</item>\n"; 
             }
 
-            $xml.= "";
+            $xml .= "</items>\n";
 
             return $xml;
         }
 
-        public function export($data) {
-            $xml = $this->dataToXML($data);
+        public function export($dataQuery) {
+            $xml = $this->dataToXML($dataQuery);
+            $xml_filename = 'xml_export_' . date('Y-m-d') . 'xml';
 
             // export to xml file
+            header('Content-type: text/xml');
+            header("Content-Disposition: attachment; filename=" . $xml_filename . "");
         }
     }
 

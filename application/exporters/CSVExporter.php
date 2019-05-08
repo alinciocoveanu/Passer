@@ -12,14 +12,34 @@
             //
         }
         
-        private function dataToCSV($data) {
-            return $csv;
+        private function dataToCSV($dataQuery) {
+            $csv_export = '';
+            $field = mysqli_field_num($dataQuery);
+
+            for($i = 0; $i < $field; $i++) {
+                $csv_export .= mysqli_field_name($dataQuery, $i) . ',';
+            }
+
+            $csv_export .= '
+            ';
+
+            while($row = mysqli_fetch_array($dataQuery)) {
+                for($i = 0; $i < $field; $i++) {
+                    $csv_export .= '"' . $row[mysqli_field_name($dataQuery, $i)] . '",';
+                }
+                $csv_export .= '
+                ';
+            }
+
+            return $csv_export;
         }
 
-        public function export($data) {
-            $csv = $this->dataToCSV($data);
+        public function export($dataQuery) {
+            $csv = $this->dataToCSV($dataQuery);
+            $csv_filename = 'csv_export_' . date('Y-m-d') . 'csv';
 
-            // export to xml file
+            header("Content-type: text/x-csv");
+            header("Content-Disposition: attachment; filename=" . $csv_filename . "");
         }
     }
 

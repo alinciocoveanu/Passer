@@ -7,7 +7,8 @@ require_once(ROOT2 . DS2 . 'models' . DS2 . 'UserModel.php');
 class UsersController {
 
     public function __construct() {
-        //
+        // storing passwords - https://zinoui.com/blog/storing-passwords-securely
+        // https://dev.mysql.com/doc/refman/5.5/en/encryption-functions.html#function_aes-decrypt
     }
 
     public function getUserId($username) {

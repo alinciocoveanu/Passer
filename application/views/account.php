@@ -17,6 +17,22 @@
 
     $usersController = new UsersController();
     $itemsController = new ItemsController($usersController->getUserId($user->getUsername()));
+
+    if(isset($_POST['del_id'])) {
+        $itemId = $_POST['del_id'];
+        $itemsController->deleteItem($itemId);
+    }
+
+    if(isset($_POST['edit_id'])) {
+        $itemId = $_POST['edit_id'];
+        $itemsController->editItem($itemId);
+    }
+
+    
+    if(isset($_POST['title']) || isset($_POST['username']) || isset($_POST['password']) || isset($_POST['url']) || isset($_POST['comment']) || isset($_POST['maxTime'])) {
+        $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
+        $itemsController->addItem($item);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -62,26 +78,35 @@
 
         <div id="rightBox">
             <div class="custom-select">
-                <label>Group by</label>
-                <select title="Order by">
-                    <option value="titleAZ">Title (A-Z)</option>
-                    <option value="titleZA">Title (Z-A)</option>
-                    <option value="domain">Domain</option>
-                    <option value="strength">Password Strength</option>
-                    <option value="freq">Frequency</option>
-                </select>
+                <label>Order by</label>
+                <form method="GET" action="account.php">
+                    <select name="orderType" title="Order by">
+                        <option value="titleAZ">Title (A-Z)</option>
+                        <option value="titleZA">Title (Z-A)</option>
+                        <option value="domain">Domain</option>
+                        <option value="strength">Password Strength</option>
+                        <option value="freq">Frequency</option>
+                    </select>
+                    <input type="submit" value="SORT">
+                </form>
             </div>
 
             <div class="rButton">
                 <button onclick="document.getElementById('addBox').style.display='block'" id="addButton" type="submit">Add</button>
                 <div id="addBox" class="popUpBox">
-                    <form class="popUpBoxContent animate" method="post">
+                    <form class="popUpBoxContent animate" method="post" action="account.php">
                         <div style="padding: 20px">
-                            <input type="text" placeholder="Enter Webpage URL" required>
+                            <input type="text" placeholder="Enter Title" name="title" required>
 
-                            <input type="text" placeholder="Enter Username" required>
+                            <input type="text" placeholder="Enter Webpage URL" name="url" required>
 
-                            <input type="password" placeholder="Enter Password" required>
+                            <input type="text" placeholder="Enter Username" name="username" required>
+
+                            <input type="password" placeholder="Enter Password" name="password" required>
+
+                            <input type="text" placeholder="Comment / Description" name="comment" required>
+
+                            <label>Availabylity:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availabylity" required>
 
                             <button type="submit">Add</button>
                         </div>
@@ -94,14 +119,34 @@
             </div>
             <div class="passItems">
                     <ul>
-                        <?php for ($i = 0 ; $i < 40 ; $i++): ?>
+                        <?php
+                        if(isset($_GET['orderType'])) {
+                            $items = $itemsController->getAllItems($_GET['orderType']);
+                        } else {
+                            $items = $itemsController->getAllItems("default");
+                        }
+                        if(!$items) {
+                            // error handling
+                        } else 
+                            while ($row = mysqli_fetch_assoc($items)): ?>
                             <li>
-                                <span class="title"><?php echo "title " . $i; ?></span>
-                                <span class="username"><?php echo "username " . $i; ?></span>
-                                <span class="edit"><img src="/Passer/public/images/edit.png" alt="edit_icon"></span>
-                                <span class="delete"><img src="/Passer/public/images/delete.png" alt="delete_icon"></span>
+                                <span class="title"><?php echo $row['title']; ?></span>
+                                <span class="username"><?php echo $row['username']; ?></span>
+                                <form method="post" action="account.php">
+                                    <span class="edit">
+                                        <input type="hidden" name="edit_id" value="<?php echo $row['item_id']; ?>">
+                                        <input type="image" src="/Passer/public/images/edit.png" alt="submit" width="40" height="30">
+                                    </span>
+                                </form>
+                                <form method="post" action="account.php">
+                                    <span class="delete">
+                                        <input type="hidden" name="del_id" value="<?php echo $row['item_id']; ?>">
+                                        <input type="image" src="/Passer/public/images/delete.png" alt="submit" width="40" height="30">
+                                    </span>
+                                </form>
                             </li>
-                        <?php endfor; ?>
+                        <?php
+                            endwhile; ?>
                     </ul>
             </div>
         </div>
