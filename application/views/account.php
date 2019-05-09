@@ -25,14 +25,19 @@
 
     if(isset($_POST['edit_id'])) {
         $itemId = $_POST['edit_id'];
-        $itemsController->editItem($itemId);
+        $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
+        $itemsController->editItem($itemId, $item);
     }
 
-    
-    if(isset($_POST['title']) || isset($_POST['username']) || isset($_POST['password']) || isset($_POST['url']) || isset($_POST['comment']) || isset($_POST['maxTime'])) {
+    if(isset($_POST['add_id'])){
         $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
         $itemsController->addItem($item);
     }
+    
+    // if(isset($_POST['title']) || isset($_POST['username']) || isset($_POST['password']) || isset($_POST['url']) || isset($_POST['comment']) || isset($_POST['maxTime'])) {
+    //     $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
+    //     $itemsController->addItem($item);
+    // }
 ?>
 
 <!DOCTYPE html>
@@ -96,27 +101,31 @@
                 <div id="addBox" class="popUpBox">
                     <form class="popUpBoxContent animate" method="post" action="account.php">
                         <div style="padding: 20px">
+                            <input type="hidden" name="add_id" value="add">
+
                             <input type="text" placeholder="Enter Title" name="title" required>
 
                             <input type="text" placeholder="Enter Webpage URL" name="url" required>
 
                             <input type="text" placeholder="Enter Username" name="username" required>
 
-                            <input type="password" placeholder="Enter Password" name="password" required>
+                            <input type="password" placeholder="Enter Password" name="password" id="password" required>
 
-                            <input type="text" placeholder="Comment / Description" name="comment" required>
+                            <input type="text" placeholder="Comment / Description" name="comment">
 
-                            <label>Availabylity:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availabylity" required>
+                            <label>Availability:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availability">
 
                             <button type="submit">Add</button>
                         </div>
 
                         <div class="boxLower">
                             <button type="button" onclick="document.getElementById('addBox').style.display='none'" class="cancelButton">Cancel</button>
+                            <button type="button" onclick="showPassword()" class="showPassword">Show Password</button>
                         </div>
                     </form>
                 </div>
             </div>
+
             <div class="passItems">
                     <ul>
                         <?php
@@ -132,12 +141,9 @@
                             <li>
                                 <span class="title"><?php echo $row['title']; ?></span>
                                 <span class="username"><?php echo $row['username']; ?></span>
-                                <form method="post" action="account.php">
-                                    <span class="edit">
-                                        <input type="hidden" name="edit_id" value="<?php echo $row['item_id']; ?>">
-                                        <input type="image" src="/Passer/public/images/edit.png" alt="submit" width="40" height="30">
-                                    </span>
-                                </form>
+                                <span class="edit">
+                                    <a href="#"><img src="/Passer/public/images/edit.png" alt="submit" onclick="document.getElementById('editBox<?php echo $row['item_id'] ?>').style.display='block'" width="30" height="30"></a>
+                                </span>
                                 <form method="post" action="account.php">
                                     <span class="delete">
                                         <input type="hidden" name="del_id" value="<?php echo $row['item_id']; ?>">
@@ -145,10 +151,53 @@
                                     </span>
                                 </form>
                             </li>
+                            <div id="editBox<?php echo $row['item_id'] ?>" class="popUpBox">
+                                <form class="popUpBoxContent animate" method="post" action="account.php">
+                                    <div style="padding: 20px">
+                                        <input type="hidden" name="edit_id" value="<?php echo $row['item_id']; ?>">
+
+                                        <input type="text" placeholder="Enter Title" name="title" value = "<?php echo $row['title'] ?>" required>
+
+                                        <input type="text" placeholder="Enter Webpage URL" name="url" value = "<?php echo $row['url'] ?>" required>
+
+                                        <input type="text" placeholder="Enter Username" name="username" value = "<?php echo $row['username'] ?>" required>
+
+                                        <input type="password" placeholder="Enter Password" name="password" id="passwordEd" value = "<?php echo $row['password'] ?>" required>
+
+                                        <input type="text" placeholder="Comment / Description" name="comment" value = "<?php echo $row['comment'] ?>">
+
+                                        <label>Availability:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availability" value = "<?php echo $row['max_time'] ?>">
+
+                                        <button type="submit">Edit</button>
+                                    </div>
+
+                                    <div class="boxLower">
+                                        <button type="button" onclick="document.getElementById('editBox<?php echo $row['item_id'] ?>').style.display='none'" class="cancelButton">Cancel</button>
+                                        <button type="button" onclick="showPassword()" class="showPassword">Show Password</button>
+                                    </div>
+                                </form>
+                            </div>
                         <?php
                             endwhile; ?>
                     </ul>
             </div>
         </div>
+        
+        <script>
+            function showPassword() {
+                var x = document.getElementById("password");
+                var y = document.getElementById("passwordEd");
+                if (x.type === "password") {
+                    x.type = "text";
+                } else {
+                    x.type = "password";
+                }
+                if (y.type === "password") {
+                    y.type = "text";
+                } else {
+                    y.type = "password";
+                }
+            }
+        </script>
     </body>
 </html>
