@@ -216,6 +216,13 @@ button:hover{
     background-color: #3bb61cc7;
 }
 
+.generatePassword {
+    width: auto;
+    padding: 10px 18px;
+    float: left;
+    background-color: #3bb61cc7;
+}
+
 /* Add zoom animation */
 .animate {
     -webkit-animation: animatezoom 0.6s;

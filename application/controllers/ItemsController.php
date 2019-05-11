@@ -7,7 +7,7 @@ require_once(ROOT1 . DS1 . 'models' . DS1 . 'ItemModel.php');
 class ItemsController {
     
     private $uid;
-
+    
     public function __construct($userId) {
         $this->uid = $userId;
     }
@@ -54,8 +54,16 @@ class ItemsController {
     //     // add edit logic
     // }
 
-    public function generatePassword() {
+    public function generatePassword($length = 16) {
+        $pass = '';
+        $alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $max = mb_strlen($alphabet, 'utf8') - 1;
 
+        for ($i = 0; $i < $length; $i++) {
+            $pass .= $alphabet[random_int(0, $max)];
+        }
+        
+        return $pass;
     }
 
     public function deleteItem($id) {

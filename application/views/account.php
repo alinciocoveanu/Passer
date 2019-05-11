@@ -43,7 +43,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-16">
         <meta name="viewport" content="width=device-width">
 
         <title>Passer | My Account</title>
@@ -110,6 +110,11 @@
                             <input type="text" placeholder="Enter Username" name="username" required>
 
                             <input type="password" placeholder="Enter Password" name="password" id="password" required>
+                            
+                            <button type="button" onclick="showPassword('add')" class="showPassword">Show Password</button>
+
+                            <button type="button" onclick="generatePassword('add')" class="generatePassword">Generate Password</button>
+
 
                             <input type="text" placeholder="Comment / Description" name="comment">
 
@@ -120,7 +125,6 @@
 
                         <div class="boxLower">
                             <button type="button" onclick="document.getElementById('addBox').style.display='none'" class="cancelButton">Cancel</button>
-                            <button type="button" onclick="showPassword()" class="showPassword">Show Password</button>
                         </div>
                     </form>
                 </div>
@@ -162,7 +166,11 @@
 
                                         <input type="text" placeholder="Enter Username" name="username" value = "<?php echo $row['username'] ?>" required>
 
-                                        <input type="password" placeholder="Enter Password" name="password" id="passwordEd" value = "<?php echo $row['password'] ?>" required>
+                                        <input type="password" placeholder="Enter Password" name="password" id="passwordEd<?php echo $row['item_id'] ?>" value = "<?php echo $row['password'] ?>" required>
+
+                                        <button type="button" onclick="showPassword(<?php echo $row['item_id'] ?>)" class="showPassword">Show Password</button>
+
+                                        <button type="button" onclick="generatePassword(<?php echo $row['item_id'] ?>)" class="generatePassword">Generate Password</button>
 
                                         <input type="text" placeholder="Comment / Description" name="comment" value = "<?php echo $row['comment'] ?>">
 
@@ -173,7 +181,6 @@
 
                                     <div class="boxLower">
                                         <button type="button" onclick="document.getElementById('editBox<?php echo $row['item_id'] ?>').style.display='none'" class="cancelButton">Cancel</button>
-                                        <button type="button" onclick="showPassword()" class="showPassword">Show Password</button>
                                     </div>
                                 </form>
                             </div>
@@ -184,19 +191,50 @@
         </div>
         
         <script>
-            function showPassword() {
-                var x = document.getElementById("password");
-                var y = document.getElementById("passwordEd");
+            function showPassword(id) {
+                var x = '';
+                switch(id) {
+                    case 'add': 
+                        x = document.getElementById("password");
+                        break;
+                    default:
+                        x = document.getElementById("passwordEd" + id);
+                }
+
                 if (x.type === "password") {
                     x.type = "text";
                 } else {
                     x.type = "password";
                 }
-                if (y.type === "password") {
-                    y.type = "text";
-                } else {
-                    y.type = "password";
-                }
+            }
+
+            function generatePassword(id) {
+                var xmlhttp = new XMLHttpRequest();
+
+                xmlhttp.onreadystatechange = function() {
+                    if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+                        if (xmlhttp.status == 200) {
+                            var x;
+                            switch(id) {
+                                case 'add': 
+                                    x = document.getElementById("password");
+                                    break;
+                                default:
+                                    x = document.getElementById("passwordEd" + id);
+                            }
+                            x.value = xmlhttp.responseText;
+                        }
+                        else if (xmlhttp.status == 400) {
+                            alert('There was an error 400');
+                        }
+                        else {
+                            alert('something else other than 200 was returned' + xmlhttp.responseText);
+                        }
+                    }
+                };
+                
+                xmlhttp.open("GET", "http://localhost:1234/Passer/public/actionPage.php?op=password", true);
+                xmlhttp.send();
             }
         </script>
     </body>
