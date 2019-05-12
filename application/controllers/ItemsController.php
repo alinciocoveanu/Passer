@@ -29,7 +29,7 @@ class ItemsController {
         $getQuerry = mysqli_query($db, "select * from items where user_id = " . $this->uid . " order by " . $order)
                     or die("Failed to query database: " . mysqli_error($db));
 
-        mysqli_close($db);            
+        mysqli_close($db);
         return $getQuerry;
     }
 
