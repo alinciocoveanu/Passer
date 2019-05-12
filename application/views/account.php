@@ -209,10 +209,10 @@
             }
 
             function generatePassword(id) {
-                var xmlhttp = new XMLHttpRequest();
+                var xmlhttp = new XMLHttpRequest(); 
 
                 xmlhttp.onreadystatechange = function() {
-                    if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.readyState == XMLHttpRequest.DONE) { //handle response
                         if (xmlhttp.status == 200) {
                             var x;
                             switch(id) {
@@ -233,7 +233,7 @@
                     }
                 };
                 
-                xmlhttp.open("GET", "http://localhost:1234/Passer/public/actionPage.php?op=password", true);
+                xmlhttp.open("GET", "http://localhost:1234/Passer/public/actionPage.php?op=password", true); //send a request to api
                 xmlhttp.send();
             }
         </script>
