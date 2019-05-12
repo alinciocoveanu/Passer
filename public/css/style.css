@@ -159,8 +159,8 @@ footer {
     display: none;
 }
 
-#login input[type=text], #login input[type=password], 
-#addBox input[type=text], #addBox input[type=password] {
+#login input[type=text], #login input[type=password],
+.popUpBox input[type=text], .popUpBox input[type=password]{
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -168,6 +168,17 @@ footer {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
+
+/* #login input[type=text], #login input[type=password], 
+#addBox input[type=text], #addBox input[type=password],
+#editBox input[type=text], #editBox input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+} */
 
 #formular input[type=text], #formular input[type=password] {
     width: 40%;
@@ -196,6 +207,20 @@ button:hover{
     width: auto;
     padding: 10px 18px;
     background-color: #f44336;
+}
+
+.showPassword {
+    width: auto;
+    padding: 10px 18px;
+    float: right;
+    background-color: #3bb61cc7;
+}
+
+.generatePassword {
+    width: auto;
+    padding: 10px 18px;
+    float: left;
+    background-color: #3bb61cc7;
 }
 
 /* Add zoom animation */

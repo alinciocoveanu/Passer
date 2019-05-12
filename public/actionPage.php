@@ -36,6 +36,13 @@ switch($op) {
             header("Location:/Passer/application/views/createAccount.php?err=1");
         }
         break;
+    case 'password':
+        $itemController = new ItemsController(NULL);
+        $length = 16;
+        if(isset($_GET['length']))
+            $length = $_GET['length'];
+        echo $itemController->generatePassword($length);
+        break;
 }
 
 ?>
