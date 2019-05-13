@@ -16,28 +16,15 @@
     }
 
     $usersController = new UsersController();
-    $itemsController = new ItemsController($usersController->getUserId($user->getUsername()));
+    $userId = $usersController->getUserId($user->getUsername());
+    $itemsController = new ItemsController($userId);
 
-    if(isset($_POST['del_id'])) {
-        $itemId = $_POST['del_id'];
-        $itemsController->deleteItem($itemId);
-    }
+    // https://github.com/elboletaire/password-strength-meter
+    // https://www.siphor.com/add-password-strength-meter-html5/
+    // https://stackoverflow.com/questions/948172/password-strength-meter
+    // https://css-tricks.com/password-strength-meter/
+    // https://www.solodev.com/blog/web-design/creating-a-password-strength-indicator.stml
 
-    if(isset($_POST['edit_id'])) {
-        $itemId = $_POST['edit_id'];
-        $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
-        $itemsController->editItem($itemId, $item);
-    }
-
-    if(isset($_POST['add_id'])){
-        $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
-        $itemsController->addItem($item);
-    }
-    
-    // if(isset($_POST['title']) || isset($_POST['username']) || isset($_POST['password']) || isset($_POST['url']) || isset($_POST['comment']) || isset($_POST['maxTime'])) {
-    //     $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
-    //     $itemsController->addItem($item);
-    // }
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +71,7 @@
         <div id="rightBox">
             <div class="custom-select">
                 <label>Order by</label>
-                <form method="GET" action="account.php">
+                <form method="GET" action="/Passer/public/actionPage.php">
                     <select name="orderType" title="Order by">
                         <option value="titleAZ">Title (A-Z)</option>
                         <option value="titleZA">Title (Z-A)</option>
@@ -92,16 +79,16 @@
                         <option value="strength">Password Strength</option>
                         <option value="freq">Frequency</option>
                     </select>
-                    <input type="submit" value="SORT">
+                    <button name="op" type="submit" value="list">SORT</button>
                 </form>
             </div>
 
             <div class="rButton">
                 <button onclick="document.getElementById('addBox').style.display='block'" id="addButton" type="submit">Add</button>
                 <div id="addBox" class="popUpBox">
-                    <form class="popUpBoxContent animate" method="post" action="account.php">
+                    <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php">
                         <div style="padding: 20px">
-                            <input type="hidden" name="add_id" value="add">
+                            <input type="hidden" name="add_uid" value="<?php echo $userId; ?>">
 
                             <input type="text" placeholder="Enter Title" name="title" required>
 
@@ -120,7 +107,7 @@
 
                             <label>Availability:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availability">
 
-                            <button type="submit">Add</button>
+                            <button name="op" value="add" type="submit">Add</button>
                         </div>
 
                         <div class="boxLower">
@@ -133,57 +120,56 @@
             <div class="passItems">
                     <ul>
                         <?php
-                        if(isset($_GET['orderType'])) {
                             $items = $itemsController->getAllItems($_GET['orderType']);
-                        } else {
-                            $items = $itemsController->getAllItems("default");
-                        }
-                        if(!$items) {
-                            // error handling
-                        } else 
-                            while ($row = mysqli_fetch_assoc($items)): ?>
-                            <li>
-                                <span class="title"><?php echo $row['title']; ?></span>
-                                <span class="username"><?php echo $row['username']; ?></span>
-                                <span class="edit">
-                                    <a href="#"><img src="/Passer/public/images/edit.png" alt="submit" onclick="document.getElementById('editBox<?php echo $row['item_id'] ?>').style.display='block'" width="30" height="30"></a>
-                                </span>
-                                <form method="post" action="account.php">
-                                    <span class="delete">
-                                        <input type="hidden" name="del_id" value="<?php echo $row['item_id']; ?>">
-                                        <input type="image" src="/Passer/public/images/delete.png" alt="submit" width="40" height="30">
+                            if(!$items) {
+                                // error handling
+                            } else 
+                                while ($row = mysqli_fetch_assoc($items)): ?>
+                                <li>
+                                    <span class="title"><?php echo $row['title']; ?></span>
+                                    <span class="username"><?php echo $row['username']; ?></span>
+                                    <span class="edit">
+                                        <a href="#"><img src="/Passer/public/images/edit.png" alt="submit" onclick="document.getElementById('editBox<?php echo $row['item_id'] ?>').style.display='block'" width="30" height="30"></a>
                                     </span>
-                                </form>
-                            </li>
-                            <div id="editBox<?php echo $row['item_id'] ?>" class="popUpBox">
-                                <form class="popUpBoxContent animate" method="post" action="account.php">
-                                    <div style="padding: 20px">
-                                        <input type="hidden" name="edit_id" value="<?php echo $row['item_id']; ?>">
+                                    <form method="post" action="/Passer/public/actionPage.php?op=delete">
+                                        <span class="delete">
+                                            <input type="hidden" name="del_id" value="<?php echo $row['item_id']; ?>">
+                                            <input type="hidden" name="del_uid" value="<?php echo $userId; ?>">
+                                            <input type="image" src="/Passer/public/images/delete.png" alt="submit" width="40" height="30">
+                                        </span>
+                                    </form>
+                                </li>
+                                <div id="editBox<?php echo $row['item_id'] ?>" class="popUpBox">
+                                    <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php">
+                                        <div style="padding: 20px">
+                                            <input type="hidden" name="edit_id" value="<?php echo $row['item_id']; ?>">
 
-                                        <input type="text" placeholder="Enter Title" name="title" value = "<?php echo $row['title'] ?>" required>
+                                            <input type="hidden" name="edit_uid" value="<?php echo $userId; ?>">
 
-                                        <input type="text" placeholder="Enter Webpage URL" name="url" value = "<?php echo $row['url'] ?>" required>
+                                            <input type="text" placeholder="Enter Title" name="title" value = "<?php echo $row['title'] ?>" required>
 
-                                        <input type="text" placeholder="Enter Username" name="username" value = "<?php echo $row['username'] ?>" required>
+                                            <input type="text" placeholder="Enter Webpage URL" name="url" value = "<?php echo $row['url'] ?>" required>
 
-                                        <input type="password" placeholder="Enter Password" name="password" id="passwordEd<?php echo $row['item_id'] ?>" value = "<?php echo $row['password'] ?>" required>
+                                            <input type="text" placeholder="Enter Username" name="username" value = "<?php echo $row['username'] ?>" required>
 
-                                        <button type="button" onclick="showPassword(<?php echo $row['item_id'] ?>)" class="showPassword">Show Password</button>
+                                            <input type="password" placeholder="Enter Password" name="password" id="passwordEd<?php echo $row['item_id'] ?>" value = "<?php echo $row['password'] ?>" required>
 
-                                        <button type="button" onclick="generatePassword(<?php echo $row['item_id'] ?>)" class="generatePassword">Generate Password</button>
+                                            <button type="button" onclick="showPassword(<?php echo $row['item_id'] ?>)" class="showPassword">Show Password</button>
 
-                                        <input type="text" placeholder="Comment / Description" name="comment" value = "<?php echo $row['comment'] ?>">
+                                            <button type="button" onclick="generatePassword(<?php echo $row['item_id'] ?>)" class="generatePassword">Generate Password</button>
 
-                                        <label>Availability:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availability" value = "<?php echo $row['max_time'] ?>">
+                                            <input type="text" placeholder="Comment / Description" name="comment" value = "<?php echo $row['comment'] ?>">
 
-                                        <button type="submit">Edit</button>
-                                    </div>
+                                            <label>Availability:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availability" value = "<?php echo $row['max_time'] ?>">
 
-                                    <div class="boxLower">
-                                        <button type="button" onclick="document.getElementById('editBox<?php echo $row['item_id'] ?>').style.display='none'" class="cancelButton">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
+                                            <button name="op" value="edit" type="submit">Edit</button>
+                                        </div>
+
+                                        <div class="boxLower">
+                                            <button type="button" onclick="document.getElementById('editBox<?php echo $row['item_id'] ?>').style.display='none'" class="cancelButton">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
                         <?php
                             endwhile; ?>
                     </ul>
@@ -233,7 +219,7 @@
                     }
                 };
                 
-                xmlhttp.open("GET", "http://localhost:1234/Passer/public/actionPage.php?op=password", true); //send a request to api
+                xmlhttp.open("GET", "http://localhost/Passer/public/actionPage.php?op=password", true); //send a request to api
                 xmlhttp.send();
             }
         </script>
