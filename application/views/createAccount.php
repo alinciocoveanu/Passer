@@ -43,8 +43,16 @@
                 <input type="text" name="username" required><br>
                 Password<br>
                 <input type="password" id="password" name="password" required><br>
+                <div class="eyeCreate">
+                    <img src="/Passer/public/images/eye.png" alt="eye Back" width="30">
+                    <img src="/Passer/public/images/eye-slash.png" onmouseover="showPassword();" onmouseout="hidePassword();" class="img-top" width="30" alt="eye Front">
+                </div><br>
                 Confirm password<br>
                 <input type="password" id="confirm_password" required><br>
+                <div class="eyeCreate">
+                    <img src="/Passer/public/images/eye.png" alt="eye Back" width="30">
+                    <img src="/Passer/public/images/eye-slash.png" onmouseover="showPassword('confirm');" onmouseout="hidePassword('confirm');" class="img-top" width="30" alt="eye Front">
+                </div><br>
                 <input type="checkbox" required>Do you agree with our terms and services?<br>
                 <span id='message'></span><br>
                 <button type="submit" name="op" value="register" style="width: 45%">Submit</button>
@@ -63,6 +71,31 @@
                 document.getElementById('message').innerHTML = '';
                 return true;
             }
+        }
+        function showPassword(id) {
+            var x = '';
+            switch(id) {
+                case 'confirm': 
+                    x = document.getElementById("confirm_password");
+                    break;
+                default:
+                    x = document.getElementById("password");
+                    break;
+            }
+            x.type = "text";
+        }
+
+        function hidePassword(id) {
+            var x = '';
+            switch(id) {
+                case 'confirm': 
+                    x = document.getElementById("confirm_password");
+                    break;
+                default:
+                    x = document.getElementById("password");
+                    break;
+            }
+            x.type = "password";
         }
     </script>
 

@@ -70,7 +70,7 @@
 
         <div id="rightBox">
             <div class="custom-select">
-                <label>Order by</label>
+                <label>Order by:</label>
                 <form method="GET" action="/Passer/public/actionPage.php">
                     <select name="orderType" title="Order by">
                         <option value="titleAZ">Title (A-Z)</option>
@@ -79,7 +79,7 @@
                         <option value="strength">Password Strength</option>
                         <option value="freq">Frequency</option>
                     </select>
-                    <button name="op" type="submit" value="list">SORT</button>
+                    <button name="op" type="submit" value="list" id="sortButton">SORT</button>
                 </form>
             </div>
 
@@ -96,14 +96,19 @@
 
                             <input type="text" placeholder="Enter Username" name="username" required>
 
-                            <input type="password" placeholder="Enter Password" name="password" id="password" required>
-                            
-                            <button type="button" onclick="showPassword('add')" class="showPassword">Show Password</button>
-
-                            <button type="button" onclick="generatePassword('add')" class="generatePassword">Generate Password</button>
-
-
                             <input type="text" placeholder="Comment / Description" name="comment">
+
+                            <input type="password" placeholder="Enter Password" name="password" id="password" required>
+
+                            <div class="eye">
+                                <img src="/Passer/public/images/eye.png" alt="eye Back" width="30">
+                                <img src="/Passer/public/images/eye-slash.png" onmouseover="showPassword('add');" onmouseout="hidePassword('add');" class="img-top" width="30" alt="eye Front">
+                            </div>
+                            <div class="lengthPass">
+                                <button type="button" onclick="generatePassword('add')" class="generatePassword">Generate Password</button>
+                                <input  type="range" id="inputLengthVal" name="length" min="8" max="100" value="16" oninput="outputLengthVal.value = inputLengthVal.value"></input>
+                                <output id="outputLengthVal">16</output>
+                            </div>
 
                             <label>Availability:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availability">
 
@@ -111,7 +116,7 @@
                         </div>
 
                         <div class="boxLower">
-                            <button type="button" onclick="document.getElementById('addBox').style.display='none'" class="cancelButton">Cancel</button>
+                            <button type="button" onclick="closePopUp('add')" class="cancelButton">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -120,29 +125,36 @@
             <div class="passItems">
                     <ul>
                         <?php
-                            $items = $itemsController->getAllItems($_GET['orderType']);
+                            if(isset($_GET['orderType']))
+                                $items = $itemsController->getAllItems($_GET['orderType']);
+                            else
+                                $items = $itemsController->getAllItems('default');
                             if(!$items) {
                                 // error handling
                             } else 
-                                while ($row = mysqli_fetch_assoc($items)): ?>
+                                while ($row = mysqli_fetch_assoc($items)): 
+                                    $id = $row['item_id'];?>
                                 <li>
                                     <span class="title"><?php echo $row['title']; ?></span>
                                     <span class="username"><?php echo $row['username']; ?></span>
+                                    <span class="copy">
+                                        <a href="#"><img src="/Passer/public/images/copy-512.png" width="40" height="30" onclick="copyPassword('<?php echo $row['password'] ?>')"></a>
+                                    </span>
                                     <span class="edit">
-                                        <a href="#"><img src="/Passer/public/images/edit.png" alt="submit" onclick="document.getElementById('editBox<?php echo $row['item_id'] ?>').style.display='block'" width="30" height="30"></a>
+                                        <a href="#"><img src="/Passer/public/images/edit.png" alt="submit" onclick="document.getElementById('editBox<?php echo $id ?>').style.display='block'" width="30" height="30"></a>
                                     </span>
                                     <form method="post" action="/Passer/public/actionPage.php?op=delete">
                                         <span class="delete">
-                                            <input type="hidden" name="del_id" value="<?php echo $row['item_id']; ?>">
+                                            <input type="hidden" name="del_id" value="<?php echo $id; ?>">
                                             <input type="hidden" name="del_uid" value="<?php echo $userId; ?>">
                                             <input type="image" src="/Passer/public/images/delete.png" alt="submit" width="40" height="30">
                                         </span>
                                     </form>
                                 </li>
-                                <div id="editBox<?php echo $row['item_id'] ?>" class="popUpBox">
+                                <div id="editBox<?php echo $id ?>" class="popUpBox">
                                     <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php">
                                         <div style="padding: 20px">
-                                            <input type="hidden" name="edit_id" value="<?php echo $row['item_id']; ?>">
+                                            <input type="hidden" name="edit_id" value="<?php echo $id; ?>">
 
                                             <input type="hidden" name="edit_uid" value="<?php echo $userId; ?>">
 
@@ -151,23 +163,28 @@
                                             <input type="text" placeholder="Enter Webpage URL" name="url" value = "<?php echo $row['url'] ?>" required>
 
                                             <input type="text" placeholder="Enter Username" name="username" value = "<?php echo $row['username'] ?>" required>
-
-                                            <input type="password" placeholder="Enter Password" name="password" id="passwordEd<?php echo $row['item_id'] ?>" value = "<?php echo $row['password'] ?>" required>
-
-                                            <button type="button" onclick="showPassword(<?php echo $row['item_id'] ?>)" class="showPassword">Show Password</button>
-
-                                            <button type="button" onclick="generatePassword(<?php echo $row['item_id'] ?>)" class="generatePassword">Generate Password</button>
-
+                                            
                                             <input type="text" placeholder="Comment / Description" name="comment" value = "<?php echo $row['comment'] ?>">
-
+                                            <label> 
+                                            <input type="password" placeholder="Enter Password" name="password" id="passwordEd<?php echo $id ?>" value = "<?php echo $row['password'] ?>" required>
+                                            <div class="eye">
+                                                <img src="/Passer/public/images/eye.png" alt="eye Back" width="30">
+                                                <img src="/Passer/public/images/eye-slash.png" onmouseover="showPassword(<?php echo $id ?>);" onmouseout="hidePassword(<?php echo $id ?>);" class="img-top" width="30" alt="eye Front">
+                                            </div>
+                                            <div class="lengthPass">
+                                                <button type="button" onclick="generatePassword(<?php echo $id ?>)" class="generatePassword">Generate Password</button>
+                                                <input  type="range" id="inputLengthVal<?php echo $id ?>" name="length" min="8" max="100" value="16" oninput="outputLengthVal<?php echo $id ?>.value = inputLengthVal<?php echo $id ?>.value"></input>
+                                                <output id="outputLengthVal<?php echo $id ?>">16</output>
+                                            </div>
+                                            
                                             <label>Availability:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availability" value = "<?php echo $row['max_time'] ?>">
 
                                             <button name="op" value="edit" type="submit">Edit</button>
                                         </div>
 
                                         <div class="boxLower">
-                                            <button type="button" onclick="document.getElementById('editBox<?php echo $row['item_id'] ?>').style.display='none'" class="cancelButton">Cancel</button>
-                                        </div>
+                                            <button type="button" onclick="closePopUp(<?php echo $id ?>, '<?php echo $row['password'] ?>')" class="cancelButton">Cancel</button>
+                                        </div>                             
                                     </form>
                                 </div>
                         <?php
@@ -177,6 +194,35 @@
         </div>
         
         <script>
+            function closePopUp(id, password) {
+                var x = '', y = '';
+                switch(id) {
+                    case 'add': 
+                        x = document.getElementById("addBox");
+                        y = document.getElementById("password");
+                        break;
+                    default:
+                        x = document.getElementById("editBox" + id);
+                        y = document.getElementById("passwordEd" + id);
+                        break;
+                }
+                x.style.display = 'none';
+                y.type = 'password';
+                if(id == 'add')
+                    y.value = '';
+                else
+                    y.value = password;
+            }
+
+            function copyPassword(password) {
+                    const elem = document.createElement('textarea');
+                    elem.value = password;
+                    document.body.appendChild(elem);
+                    elem.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(elem);
+                }
+
             function showPassword(id) {
                 var x = '';
                 switch(id) {
@@ -185,13 +231,22 @@
                         break;
                     default:
                         x = document.getElementById("passwordEd" + id);
+                        break;
                 }
+                x.type = "text";
+            }
 
-                if (x.type === "password") {
-                    x.type = "text";
-                } else {
-                    x.type = "password";
+            function hidePassword(id) {
+                var x = '';
+                switch(id) {
+                    case 'add': 
+                        x = document.getElementById("password");
+                        break;
+                    default:
+                        x = document.getElementById("passwordEd" + id);
+                        break;
                 }
+                x.type = "password";
             }
 
             function generatePassword(id) {
@@ -207,6 +262,7 @@
                                     break;
                                 default:
                                     x = document.getElementById("passwordEd" + id);
+                                    break;
                             }
                             x.value = xmlhttp.responseText;
                         }
@@ -218,8 +274,18 @@
                         }
                     }
                 };
+                var length = 0;
+                switch(id) {
+                    case 'add': 
+                        length = document.getElementById("inputLengthVal").value;
+                        break;
+                    default:
+                        length = document.getElementById("inputLengthVal" + id).value;
+                        break;
+                }
                 
-                xmlhttp.open("GET", "http://localhost/Passer/public/actionPage.php?op=password", true); //send a request to api
+                //!schimba aici daca nu merge generate!
+                xmlhttp.open("GET", "http://localhost:1234/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
                 xmlhttp.send();
             }
         </script>

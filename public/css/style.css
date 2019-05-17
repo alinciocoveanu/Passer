@@ -223,6 +223,60 @@ button:hover{
     background-color: #3bb61cc7;
 }
 
+.lengthPass {
+    display: flex;
+    padding: 5px;
+}
+
+.lengthPass output {
+    display: flex;
+    padding: 14px;
+    justify-content: flex-end;
+    align-content: center
+}
+
+.lengthPass input[type='range'] {
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+}
+
+.eye {
+    position: relative;
+    display: inline-block;
+    left: 93%;
+    bottom: 44px;
+}
+
+.eye .img-top {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+.eye:hover .img-top {
+    display: inline;
+}
+
+.eyeCreate {
+    position: relative;
+    display: inline-block;
+    left: 20%;
+    bottom: 44px;
+}
+
+.eyeCreate .img-top {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+.eyeCreate:hover .img-top {
+    display: inline;
+}
+
 /* Add zoom animation */
 .animate {
     -webkit-animation: animatezoom 0.6s;
@@ -323,8 +377,10 @@ button:hover{
 } */
 
 #rightBox {
-    max-width: 90%;
+    max-width: 100%;
 }
+
+
 
 #addButton {
     text-align: center;
@@ -343,6 +399,12 @@ button:hover{
     -webkit-transition-duration: 0.4s;
 }
 
+#sortButton {
+    width: 5%;
+    font-size: 12px;
+    color: white;
+}
+
 #addButton:hover {
     background-color: #05476B;
     color: white;
@@ -359,11 +421,9 @@ button:hover{
 .custom-select {
     position: relative;
     font-family: Arial;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
     padding-top: 20px;
     padding-left: 20px;
+    width: 100%;
 }
 
 .custom-select label {
