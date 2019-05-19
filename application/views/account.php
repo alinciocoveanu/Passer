@@ -293,7 +293,7 @@
                 }
                 
                 //!schimba aici daca nu merge generate!
-                xmlhttp.open("GET", "http://localhost:1234/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
+                xmlhttp.open("GET", "http://localhost/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
                 xmlhttp.send();
             }
         </script>
