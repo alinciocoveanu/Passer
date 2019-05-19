@@ -9,8 +9,9 @@
     session_start();
 
     
-    if(!isset($_SESSION['user'])){
+    if((!isset($_SESSION['user']))){
         header("Location:/Passer/application/views/index.php");
+        exit;
     } else {
         $user = $_SESSION['user'];
     }
