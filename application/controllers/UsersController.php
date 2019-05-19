@@ -6,9 +6,32 @@ require_once(ROOT2 . DS2 . 'models' . DS2 . 'UserModel.php');
 
 class UsersController {
 
+    private $encryptionMethod = 'aes-256-cbc';
+
     public function __construct() {
         // storing passwords - https://zinoui.com/blog/storing-passwords-securely
         // https://dev.mysql.com/doc/refman/5.5/en/encryption-functions.html#function_aes-decrypt
+    }
+
+    private function encryptPassword($username, $password) {
+        $encryptedPassword = "";
+
+        $key = hash('sha256', $username);
+        $encryptionKey = base64_decode($key);
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($this->encryptionMethod));
+        
+        $encryptedPassword = openssl_encrypt($password, $this->encryptionMethod, $encryptionKey, 0, $iv);
+
+        return base64_encode($encryptedPassword . '::' . $iv);
+    }
+
+    private function decryptPassword($username, $encryptedPassword) {
+        $key = hash('sha256', $username);
+        $encryptionKey = base64_decode($key);
+
+        list($encryptedData, $iv) = explode('::', base64_decode($encryptedPassword), 2);
+
+        return openssl_decrypt($encryptedData, $this->encryptionMethod, $encryptionKey, 0, $iv);
     }
 
     public function getUserId($username) {
@@ -40,6 +63,7 @@ class UsersController {
         $id = mysqli_fetch_array($rezSel);
         $id = $id['user_id'];
         
+        $password = $this->encryptPassword($user, $password);
         $rezPass = mysqli_query($db, "insert into passwords(user_id, password) values ('$id', '$password');");       
         
         if($rezPass == false)
@@ -70,27 +94,31 @@ class UsersController {
             return false;
         } 
 
+        $uid = $row['user_id'];
+
         $rezEmail = $row['email'];
         
-        $rezPass = mysqli_query($db, "select * from passwords where password = '$pass'")
+        $rezPass = mysqli_query($db, "select * from passwords where user_id = '$uid'")
                     or die("Failed to querry database ".mysqli_error($db));
 
         $row = mysqli_fetch_array($rezPass);
 
-        if($row['password'] != $pass){
+        $password = $row['password'];
+        $password = $this->decryptPassword($user, $password);
+        if($password != $pass){
             mysqli_close($db);
            return false;
         }
 
-        $user = new UserModel($user, $pass, $rezEmail);
+        $user = new UserModel($user, $uid, $rezEmail);
 
         mysqli_close($db);
         return $user;
     }
 
-    public function createUser($user) {
+    public function createUser($user, $password) {
         //check db
-        if($this->insertUser($user->getUsername(), $user->getPassword(), $user->getEmail())) {
+        if($this->insertUser($user->getUsername(), $password, $user->getEmail())) {
             //start the session for the user
             session_start();
             //set the user object to the session

@@ -1,11 +1,10 @@
 <?php
 
 class UserModel {
-    private $username, $password, $email;
+    private $username, $email;
 
-    public function __construct($username, $password, $email) {
+    public function __construct($username, $email) {
         $this->username = $username;
-        $this->password = $password;
         $this->email = $email;
     }
 
@@ -15,14 +14,6 @@ class UserModel {
 
     public function setUsername($username) {
         $this->username = $username;
-    }
-
-    public function getPassword() {
-        return $this->password;
-    }
-
-    public function setPassword($password) {
-        $this->password = $password;
     }
 
     public function getEmail() {
