@@ -53,7 +53,7 @@
                             <?php print $user->getUsername(); ?>
                         </button>
                         <div class="dropdownContent">
-                            <a href="#">Account settings</a>
+                            <a href="#">Account settings</a> <!-- TODO: Export & import -->
                             <a href="/Passer/public/actionPage.php?op=logout">Log out</a>
                         </div>
                     </div>

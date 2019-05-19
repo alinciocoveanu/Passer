@@ -389,7 +389,8 @@ button:hover{
     background-color: white;
     color: black;
     right: 50px;
-    bottom: 50px;
+    top: 17%;
+    /* bottom: 50px; */
     border-radius: 50%;
     width: 80px;
     height: 80px;

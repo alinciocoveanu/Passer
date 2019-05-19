@@ -20,7 +20,7 @@ class ItemsController {
             case "titleAZ": $order = "title asc"; break;
             case "titleZA": $order = "title desc"; break;
             case "domain": $order = "SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(url, '/', 3), '://', -1), '/', 1), '?', 1)"; break;
-            case "strength": break; // create mysql function to get password strength http://www.passwordmeter.com/
+            case "strength": break; //TODO: create mysql function to get password strength http://www.passwordmeter.com/
             case "freq": $order = "frequency(password) desc"; break;
             default: $order = "title asc"; break;
         }
