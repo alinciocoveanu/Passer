@@ -53,7 +53,14 @@
                             <?php print $user->getUsername(); ?>
                         </button>
                         <div class="dropdownContent">
-                            <a href="#">Account settings</a>
+                            <button class="dropdown-button">
+                                Export as  <!-- TODO -->
+                            </button>
+                            <!-- <div class="dropdownContent">
+                                <a href="#">XML</a>
+                                <a href="#">JSON</a>
+                                <a href="#">CSV</a>
+                            </div> -->
                             <a href="/Passer/public/actionPage.php?op=logout">Log out</a>
                         </div>
                     </div>
@@ -120,7 +127,11 @@
             <div class="passItems">
                     <ul>
                         <?php
-                            $items = $itemsController->getAllItems($_GET['orderType']);
+                            if(isset($_GET['orderType'])){
+                                $items = $itemsController->getAllItems($_GET['orderType']);
+                            } else {
+                                $items = $itemsController->getAllItems('default');
+                            }
                             if(!$items) {
                                 // error handling
                             } else 
