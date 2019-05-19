@@ -50,7 +50,11 @@
                         <?php } ?>
                         <input type="text" placeholder="Enter Username" name="username" required>
 
-                        <input type="password" placeholder="Enter Password" name="password" required>
+                        <input id="password" type="password" placeholder="Enter Password" name="password" required>
+                        <div class="eye">
+                            <img src="/Passer/public/images/eye.png" alt="eye Back" width="30">
+                            <img src="/Passer/public/images/eye-slash.png" onmouseover="showPassword();" onmouseout="hidePassword();" class="img-top" width="30" alt="eye Front">
+                        </div>
 
                         <button type="submit" name="op" value="login">Log In</button>
                         <button type="button" onclick="location.href='createAccount.php';">Create an account</button>
@@ -66,6 +70,17 @@
                 </form>
             </div>
         </section>
+        <script>
+        function showPassword() {
+            var x = document.getElementById("password");
+            x.type = "text";
+        }
+
+        function hidePassword() {
+            var x = document.getElementById("password");
+            x.type = "password";
+        }
+        </script>
 
         <section id="boxes">
             <div class="container">

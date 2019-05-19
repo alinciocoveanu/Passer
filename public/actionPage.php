@@ -38,9 +38,7 @@ switch($op) {
         break;
     case 'password':
         $itemController = new ItemsController(NULL);
-        $length = 16;
-        if(isset($_GET['length']))
-            $length = $_GET['length'];
+        $length = $_GET['length'];
         echo $itemController->generatePassword($length);
         break;
     
@@ -67,7 +65,7 @@ switch($op) {
         if($response) {
             header("Location:/Passer/application/views/account.php");
         } else {
-            header("Location:/Passer/application/views/createAccount.php?err=1");
+            header("Location:/Passer/application/views/account.php?err=1");
         }
         break;
 
@@ -80,7 +78,7 @@ switch($op) {
         if($response) {
             header("Location:/Passer/application/views/account.php");
         } else {
-            header("Location:/Passer/application/views/createAccount.php?err=1");
+            header("Location:/Passer/application/views/account.php?err=1");
         }
         break;
 
