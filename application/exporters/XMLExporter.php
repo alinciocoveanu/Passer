@@ -12,36 +12,41 @@
             //
         }
 
-        private function dataToXML($dataQuery) {
-            $xml = "<?xml version=\"1.0\"?>\n";
-        
-            // root node
-            $xml .= "<items>\n";
+        private static function dataToXML($dataQuery) {
+            $dom = new DOMDocument('1.0', 'utf-8');
+            $dom->formatOutput = True;
 
-            // rows
-            while ($row = mysqli_fetch_assoc($dataQuery)) {    
-                $xml .= "\t<item>\n"; 
-                
-                $i = 0;
-                // cells
-                foreach ($row as $cell) {
-                    $col_name = mysqli_field_name($dataQuery, $i);
-                    // creates the "<tag>contents</tag>" representing the column
-                    $xml .= "\t\t<" . $col_name . ">" . $cell . "</" . $col_name . ">\n";
-                    $i++;
+            $root = $dom->createElement('items');
+            $dom->appendChild($root);
+
+            while($row = mysqli_fetch_assoc($dataQuery)) {
+                $node = $dom->createElement('item');
+
+                foreach($row as $key => $val) {
+                    $child = $dom->createElement($key);
+                    $child->appendChild($dom->createCDATASection($val));
+                    $node->appendChild($child);
                 }
 
-                $xml .= "\t</item>\n"; 
+                $root->appendChild($node);
             }
 
-            $xml .= "</items>\n";
-
-            return $xml;
+            return $dom->saveXML();
         }
 
-        public function export($dataQuery) {
-            $xml = $this->dataToXML($dataQuery);
-            $xml_filename = 'xml_export_' . date('Y-m-d') . 'xml';
+        public static function export($dataQuery) {
+            $xml = XMLExporter::dataToXML($dataQuery);
+            $xml = str_replace("<![CDATA[","",$xml);
+            $xml = str_replace("]]>","",$xml);
+            $xml_filename = 'xml_export_' . date('Y-m-d') . '.xml';
+
+            $myfile = fopen($xml_filename, "w");
+
+            fwrite($myfile, $xml, strlen($xml));
+
+            fclose($myfile);
+
+            readfile($xml_filename);
 
             // export to xml file
             header('Content-type: text/xml');

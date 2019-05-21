@@ -12,31 +12,23 @@
             //
         }
         
-        private function dataToCSV($dataQuery) {
-            $csv_export = '';
-            $field = mysqli_field_num($dataQuery);
+        private static function dataToCSVFile($dataQuery, $filename) {
+            $output = fopen($filename, "w");
 
-            for($i = 0; $i < $field; $i++) {
-                $csv_export .= mysqli_field_name($dataQuery, $i) . ',';
+            fputcsv($output, array('ITEM_ID', 'USER_ID', 'TITLE', 'USERNAME', 'PASSWORD', 'URL', 'COMMENT', 'MAX_TIME'));
+
+            while($row = mysqli_fetch_assoc($dataQuery)) {
+                fputcsv($output, $row);
             }
 
-            $csv_export .= '
-            ';
-
-            while($row = mysqli_fetch_array($dataQuery)) {
-                for($i = 0; $i < $field; $i++) {
-                    $csv_export .= '"' . $row[mysqli_field_name($dataQuery, $i)] . '",';
-                }
-                $csv_export .= '
-                ';
-            }
-
-            return $csv_export;
+            fclose($output);
         }
 
-        public function export($dataQuery) {
-            $csv = $this->dataToCSV($dataQuery);
-            $csv_filename = 'csv_export_' . date('Y-m-d') . 'csv';
+        public static function export($dataQuery) {
+            $csv_filename = 'csv_export_' . date('Y-m-d') . '.csv';
+            $csv = CSVExporter::dataToCSVFile($dataQuery, $csv_filename);
+
+            readfile($csv_filename);
 
             header("Content-type: text/x-csv");
             header("Content-Disposition: attachment; filename=" . $csv_filename . "");

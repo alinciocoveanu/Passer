@@ -4,6 +4,10 @@ define('ROOT1', dirname(dirname(__FILE__)));
 
 require_once(ROOT1 . DS1 . 'models' . DS1 . 'ItemModel.php');
 
+require_once(ROOT1 . DS1 . 'exporters' . DS1 . 'CSVExporter.php');
+require_once(ROOT1 . DS1 . 'exporters' . DS1 . 'JSONExporter.php');
+require_once(ROOT1 . DS1 . 'exporters' . DS1 . 'XMLExporter.php');
+
 class ItemsController {
     
     private $uid;
@@ -20,8 +24,8 @@ class ItemsController {
             case "titleAZ": $order = "title asc"; break;
             case "titleZA": $order = "title desc"; break;
             case "domain": $order = "SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(url, '/', 3), '://', -1), '/', 1), '?', 1)"; break;
-            case "strength": $order = "strength(password) desc"; break;
-            case "freq": $order = "frequency(password) desc"; break;
+            case "strength": $order = "strength(AES_DECRYPT(password, UNHEX(SHA2(username, 512)))) desc"; break;
+            case "freq": $order = "frequency(AES_DECRYPT(password, UNHEX(SHA2(username, 512)))) desc"; break;
             default: $order = "title asc"; break;
         }
         
@@ -50,10 +54,6 @@ class ItemsController {
         mysqli_close($db);
         return $addQuery;
     }
-
-    // public function getItemById($id) {
-    //     // add edit logic
-    // }
 
     public function generatePassword($length = 16) {
         $pass = '';
@@ -100,13 +100,15 @@ class ItemsController {
     public function exportItems($type) {
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
         // set data
-        $dataQuery = mysqli_query($db, "select * from items where user_id = " . $this->uid . "order by 1 asc");
+        $dataQuery = mysqli_query($db, "select item_id, user_id, title, username, AES_DECRYPT(password, UNHEX(SHA2(username, 512))) as \"password\", url, comment, max_time from items where user_id = " . $this->uid . " order by username asc")
+                        or die("Failed to query database: " . mysqli_error($db));
 
         switch($type) {
-            case "csv": CSVExporter::export($dataQuery);
-            case "json": JSONExporter::export($dataQuery);
-            case "xml": XMLExporter::export($dataQuery);
+            case "csv": CSVExporter::export($dataQuery); break;
+            case "json": JSONExporter::export($dataQuery); break;
+            case "xml": XMLExporter::export($dataQuery); break;
         }
+
         mysqli_close($db);
     }
 }

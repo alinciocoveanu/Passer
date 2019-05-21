@@ -1,5 +1,5 @@
 <?php
     interface IExporter {
-        public function export($data);
+        public static function export($data);
     }
 ?>
