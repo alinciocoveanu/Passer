@@ -54,7 +54,7 @@
                         </button>
                         <div class="dropdownContent">
                             <button class="dropdown-button">
-                                <a href="/Passer/public/actionPage.php?op=csv&uid=<?php echo $userId; ?>">
+                                <a href="/Passer/public/actionPage.php?op=json&uid=<?php echo $userId; ?>">
                                     Export as  <!-- TODO -->
                                 </a>
                             </button>

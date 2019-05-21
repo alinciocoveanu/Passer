@@ -24,8 +24,8 @@
             fclose($output);
         }
 
-        public static function export($dataQuery) {
-            $csv_filename = 'csv_export_' . date('Y-m-d') . '.csv';
+        public static function export($dataQuery, $uid) {
+            $csv_filename = 'csv_export_'. $uid . '_' . date('Y-m-d') . '.csv';
             $csv = CSVExporter::dataToCSVFile($dataQuery, $csv_filename);
 
             readfile($csv_filename);

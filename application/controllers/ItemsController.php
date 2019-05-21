@@ -104,9 +104,9 @@ class ItemsController {
                         or die("Failed to query database: " . mysqli_error($db));
 
         switch($type) {
-            case "csv": CSVExporter::export($dataQuery); break;
-            case "json": JSONExporter::export($dataQuery); break;
-            case "xml": XMLExporter::export($dataQuery); break;
+            case "csv": CSVExporter::export($dataQuery, $this->uid); break;
+            case "json": JSONExporter::export($dataQuery, $this->uid); break;
+            case "xml": XMLExporter::export($dataQuery, $this->uid); break;
         }
 
         mysqli_close($db);

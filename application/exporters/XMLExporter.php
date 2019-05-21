@@ -34,11 +34,11 @@
             return $dom->saveXML();
         }
 
-        public static function export($dataQuery) {
+        public static function export($dataQuery, $uid) {
             $xml = XMLExporter::dataToXML($dataQuery);
             $xml = str_replace("<![CDATA[","",$xml);
             $xml = str_replace("]]>","",$xml);
-            $xml_filename = 'xml_export_' . date('Y-m-d') . '.xml';
+            $xml_filename = 'xml_export_'. $uid . '_' . date('Y-m-d') . '.xml';
 
             $myfile = fopen($xml_filename, "w");
 

@@ -23,9 +23,9 @@
             return $json;
         }
 
-        public static function export($dataQuery) {
+        public static function export($dataQuery, $uid) {
             $json = JSONExporter::dataToJSON($dataQuery);
-            $json_filename = 'json_export_' . date('Y-m-d') . '.json';
+            $json_filename = 'json_export_'. $uid . '_' . date('Y-m-d') . '.json';
 
             $myfile = fopen($json_filename, "w");
 
