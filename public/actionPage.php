@@ -90,6 +90,23 @@ switch($op) {
         }
         header("Location:/Passer/application/views/account.php?orderType=" . $orderType);
         break;
+
+
+    case 'csv':
+        $itemController = new ItemsController($_GET['uid']);
+        $itemController->exportItems('csv');
+        break;
+
+    case 'json':
+        $itemController = new ItemsController($_GET['uid']);
+        $itemController->exportItems('json');
+        break;
+
+    case 'xml':
+        $itemController = new ItemsController($_GET['uid']);
+        $itemController->exportItems('xml');
+        break;
+        
 }
 
 ?>

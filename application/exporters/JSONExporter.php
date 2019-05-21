@@ -12,21 +12,28 @@
             //
         }
 
-        private function dataToJSON($dataQuery) {
+        private static function dataToJSON($dataQuery) {
             $json_array = array();
 
             while ( $row = mysqli_fetch_assoc($dataQuery)) {
-	            $json_array[] = $row;
+                array_push($json_array, $row);
             }
 
-            $json = json_encode($json_array);
+            $json = json_encode($json_array, JSON_PRETTY_PRINT);
             return $json;
         }
 
-        public function export($dataQuery) {
-            $json = $this->dataToJSON($dataQuery);
-            $json_filename = 'json_export_' . date('Y-m-d') . 'json';
+        public static function export($dataQuery, $uid) {
+            $json = JSONExporter::dataToJSON($dataQuery);
+            $json_filename = 'json_export_'. $uid . '_' . date('Y-m-d') . '.json';
 
+            $myfile = fopen($json_filename, "w");
+
+            fwrite($myfile, $json, strlen($json));
+
+            fclose($myfile);
+
+            readfile($json_filename);
             // export to json file
             header('Content-type: application/json');
             header("Content-Disposition: attachment; filename=" . $json_filename . "");
