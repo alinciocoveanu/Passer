@@ -44,7 +44,7 @@
                         </button>
                         <div class="dropdownContent">
                             <button class="dropdown-button" onclick="document.getElementById('expBox').style.display='block'">Export</button>
-                            <a href="/Passer/public/actionPage.php?op=logout">Log out</a>
+                            <a href="/Passer/public/loginControl.php?op=logout">Log out</a>
                         </div>
                     </div>
                 </nav>

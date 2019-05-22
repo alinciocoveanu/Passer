@@ -2,39 +2,17 @@
 define('DS7', DIRECTORY_SEPARATOR);
 define('ROOT7', dirname(dirname(__FILE__)));
 
-require_once(ROOT7 . DS7 . 'application' . DS7 . 'models' . DS7 . 'UserModel.php');
 require_once(ROOT7 . DS7 . 'application' . DS7 . 'models' . DS7 . 'ItemModel.php');
 require_once(ROOT7 . DS7 . 'application' . DS7 . 'controllers' . DS7 . 'ItemsController.php');
-require_once(ROOT7 . DS7 . 'application' . DS7 . 'controllers' . DS7 . 'UsersController.php');
+
+session_start();
+if(!isset($_SESSION['user'])) {
+    http_response_code(403);
+    die('Forbidden');
+}
 
 @$op = $_REQUEST['op'];
-
 switch($op) {
-    case 'login':
-        $userController = new UsersController();
-
-        if($userController->logUser($_POST['username'], $_POST['password'])) {
-            header("Location:/Passer/application/views/account.php");
-        } else
-            header("Location:/Passer/application/views/index.php?err=1");
-        break;
-    case 'logout':
-        $userController = new UsersController();
-        
-        $userController->logout();
-        header("Location:/Passer/application/views/index.php");
-        break;
-    case 'register':
-        $userController = new UsersController();
-        $user = new UserModel($_POST['username'], $_POST['email'], $userController->getUserId($_POST['username']));
-        $password = $_POST['password'];
-
-        if($userController->createUser($user, $password)) {
-            header("Location:/Passer/application/views/account.php");
-        } else {
-            header("Location:/Passer/application/views/createAccount.php?err=1");
-        }
-        break;
     case 'password':
         $itemController = new ItemsController(NULL);
         $length = $_GET['length'];
@@ -89,7 +67,6 @@ switch($op) {
         } else {
             $items = $itemsController->getAllItems('default');
         }
-        session_start();
         $_SESSION['items'] = $items;
         header("Location:/Passer/application/views/account.php");
         break;
