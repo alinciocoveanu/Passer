@@ -33,8 +33,9 @@ class ItemsController {
         $getQuerry = mysqli_query($db, "select item_id, user_id, title, username, AES_DECRYPT(password, UNHEX(SHA2(username, 512))) as \"password\", url, comment, max_time from items where user_id = " . $this->uid . " order by " . $order)
                     or die("Failed to query database: " . mysqli_error($db));
 
+        $rez = mysqli_fetch_all($getQuerry);
         mysqli_close($db);
-        return $getQuerry;
+        return $rez;
     }
 
     public function addItem($itemModel) {

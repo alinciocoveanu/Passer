@@ -26,7 +26,7 @@ switch($op) {
         break;
     case 'register':
         $userController = new UsersController();
-        $user = new UserModel($_POST['username'], $_POST['email']);
+        $user = new UserModel($_POST['username'], $_POST['email'], $userController->getUserId($_POST['username']));
         $password = $_POST['password'];
 
         if($userController->createUser($user, $password)) {
@@ -48,7 +48,7 @@ switch($op) {
         $response = $itemController->addItem($item);
         
         if($response) {
-            header("Location:/Passer/application/views/account.php");
+            header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
         } else {
             header("Location:/Passer/application/views/createAccount.php?err=1");
         }
@@ -62,7 +62,7 @@ switch($op) {
         $response = $itemController->editItem($itemId, $item);
 
         if($response) {
-            header("Location:/Passer/application/views/account.php");
+            header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
         } else {
             header("Location:/Passer/application/views/account.php?err=1");
         }
@@ -75,7 +75,7 @@ switch($op) {
         $response = $itemController->deleteItem($itemId);
 
         if($response) {
-            header("Location:/Passer/application/views/account.php");
+            header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
         } else {
             header("Location:/Passer/application/views/account.php?err=1");
         }
@@ -83,19 +83,20 @@ switch($op) {
 
     case 'list':
         $orderType = '';
-        if(isset($_GET['orderType'])) {
-            $orderType = $_GET['orderType'];
+        $itemsController = new ItemsController($_REQUEST['uid']);
+        if(isset($_REQUEST['orderType'])) {
+            $items = $itemsController->getAllItems($_REQUEST['orderType']);
         } else {
-            $orderType = "default";
+            $items = $itemsController->getAllItems('default');
         }
-        header("Location:/Passer/application/views/account.php?orderType=" . $orderType);
+        session_start();
+        $_SESSION['items'] = $items;
+        header("Location:/Passer/application/views/account.php");
         break;
-
 
     case 'export':
         $itemController = new ItemsController($_POST['uid']);
         $itemController->exportItems($_POST['format']);
         break;
 }
-
 ?>

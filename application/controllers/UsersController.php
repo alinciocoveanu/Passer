@@ -3,6 +3,7 @@ define('DS2', DIRECTORY_SEPARATOR);
 define('ROOT2', dirname(dirname(__FILE__)));
 
 require_once(ROOT2 . DS2 . 'models' . DS2 . 'UserModel.php');
+require_once(ROOT2 . DS2 . 'controllers' . DS2 . 'ItemsController.php');
 
 class UsersController {
 
@@ -70,7 +71,7 @@ class UsersController {
             return false;
 
         mysqli_close($db);
-        return true;
+        return new UserModel($user, $email, $id);
     }
 
     private function authenticate($user, $pass) {
@@ -107,10 +108,10 @@ class UsersController {
         $password = $this->decryptPassword($user, $password);
         if($password != $pass){
             mysqli_close($db);
-           return false;
+            return false;
         }
 
-        $user = new UserModel($user, $uid, $rezEmail);
+        $user = new UserModel($user, $rezEmail, $uid);
 
         mysqli_close($db);
         return $user;
@@ -118,7 +119,8 @@ class UsersController {
 
     public function createUser($user, $password) {
         //check db
-        if($this->insertUser($user->getUsername(), $password, $user->getEmail())) {
+        $rez = $this->insertUser($user->getUsername(), $password, $user->getEmail());
+        if($rez != false) {
             //start the session for the user
             session_start();
             //set the user object to the session
@@ -136,6 +138,9 @@ class UsersController {
             session_start();
             //set the user object to the session
             $_SESSION['user'] = $rez;
+            $itemsController = new ItemsController($this->getUserId($username));
+            $items = $itemsController->getAllItems('default');
+            $_SESSION['items'] = $items;
             return true;
         }
         return false;
