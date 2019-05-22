@@ -92,21 +92,10 @@ switch($op) {
         break;
 
 
-    case 'csv':
-        $itemController = new ItemsController($_GET['uid']);
-        $itemController->exportItems('csv');
+    case 'export':
+        $itemController = new ItemsController($_POST['uid']);
+        $itemController->exportItems($_POST['format']);
         break;
-
-    case 'json':
-        $itemController = new ItemsController($_GET['uid']);
-        $itemController->exportItems('json');
-        break;
-
-    case 'xml':
-        $itemController = new ItemsController($_GET['uid']);
-        $itemController->exportItems('xml');
-        break;
-        
 }
 
 ?>

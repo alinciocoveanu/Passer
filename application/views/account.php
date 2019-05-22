@@ -19,13 +19,6 @@
     $usersController = new UsersController();
     $userId = $usersController->getUserId($user->getUsername());
     $itemsController = new ItemsController($userId);
-
-    // https://github.com/elboletaire/password-strength-meter
-    // https://www.siphor.com/add-password-strength-meter-html5/
-    // https://stackoverflow.com/questions/948172/password-strength-meter
-    // https://css-tricks.com/password-strength-meter/
-    // https://www.solodev.com/blog/web-design/creating-a-password-strength-indicator.stml
-
 ?>
 
 <!DOCTYPE html>
@@ -54,23 +47,29 @@
                             <?php print $user->getUsername(); ?>
                         </button>
                         <div class="dropdownContent">
-                            <button class="dropdown-button">
-                                <a href="/Passer/public/actionPage.php?op=json&uid=<?php echo $userId; ?>">
-                                    Export as  <!-- TODO -->
-                                </a>
-                            </button>
-                            <!-- <div class="dropdownContent">
-                                <a href="#">XML</a>
-                                <a href="#">JSON</a>
-                                <a href="#">CSV</a>
-                            </div> -->
+                            <button class="dropdown-button" onclick="document.getElementById('expBox').style.display='block'">Export</button>
                             <a href="/Passer/public/actionPage.php?op=logout">Log out</a>
                         </div>
                     </div>
                 </nav>
             </div>
         </header>
-
+        <div id="expBox" class="exportBox">
+                <span onclick="document.getElementById('expBox').style.display='none'" class="close">&times;</span>
+                <form class="exportBoxContent animate" action="/Passer/public/actionPage.php" method="post">
+                    <div id="exportTop">
+                        <p>Export as: </p><br>
+                    </div>
+                    <div div="exportLower">
+                        <input type="hidden" name="uid" value="<?php echo $userId; ?>"></input>
+                        <input type="radio" name="format" value="xml" required>XML</input><br>
+                        <input type="radio" name="format" value="json" required>JSON</input><br>
+                        <input type="radio" name="format" value="csv" required>CSV</input><br>
+                        <button type="submit" name="op" value="export">Export</button> 
+                    </div>
+                </form>
+            </div>
+        </div>
         <!-- <div id="leftMenu">
             <button class="leftMenuButton">Web Pages</button>
             <button class="leftMenuButton">Online banking</button>
@@ -296,7 +295,7 @@
                 }
                 
                 //!schimba aici daca nu merge generate!
-                xmlhttp.open("GET", "http://localhost/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
+                xmlhttp.open("GET", "http://localhost:1234/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
                 xmlhttp.send();
             }
         </script>

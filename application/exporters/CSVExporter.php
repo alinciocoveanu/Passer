@@ -32,6 +32,8 @@
 
             header("Content-type: text/x-csv");
             header("Content-Disposition: attachment; filename=" . $csv_filename . "");
+            ignore_user_abort(true);
+            unlink($csv_filename);
         }
     }
 
