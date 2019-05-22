@@ -4,6 +4,10 @@ define('ROOT1', dirname(dirname(__FILE__)));
 
 require_once(ROOT1 . DS1 . 'models' . DS1 . 'ItemModel.php');
 
+require_once(ROOT1 . DS1 . 'exporters' . DS1 . 'CSVExporter.php');
+require_once(ROOT1 . DS1 . 'exporters' . DS1 . 'JSONExporter.php');
+require_once(ROOT1 . DS1 . 'exporters' . DS1 . 'XMLExporter.php');
+
 class ItemsController {
     
     private $uid;
@@ -20,13 +24,13 @@ class ItemsController {
             case "titleAZ": $order = "title asc"; break;
             case "titleZA": $order = "title desc"; break;
             case "domain": $order = "SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(url, '/', 3), '://', -1), '/', 1), '?', 1)"; break;
-            case "strength": $order = "strength(password) desc"; break; //TODO: create mysql function to get password strength http://www.passwordmeter.com/
-            case "freq": $order = "frequency(password) desc"; break;
+            case "strength": $order = "strength(AES_DECRYPT(password, UNHEX(SHA2(username, 512)))) desc"; break;
+            case "freq": $order = "frequency(AES_DECRYPT(password, UNHEX(SHA2(username, 512)))) desc"; break;
             default: $order = "title asc"; break;
         }
         
         // check if query is ok
-        $getQuerry = mysqli_query($db, "select * from items where user_id = " . $this->uid . " order by " . $order)
+        $getQuerry = mysqli_query($db, "select item_id, user_id, title, username, AES_DECRYPT(password, UNHEX(SHA2(username, 512))) as \"password\", url, comment, max_time from items where user_id = " . $this->uid . " order by " . $order)
                     or die("Failed to query database: " . mysqli_error($db));
 
         mysqli_close($db);
@@ -43,16 +47,13 @@ class ItemsController {
         $comment = $itemModel->getComment();
         $max_time = $itemModel->getMaxTime();
 
-        $addQuery = mysqli_query($db, "insert into items(item_id, user_id, title, username, password, url, comment, max_time) values(NULL, '$this->uid', '$title', '$username', '$password', '$url', '$comment', '$max_time')")
+                                                                                                            // AES_ENCRYPT('text', UNHEX(SHA2('My secret passphrase',512)))
+        $addQuery = mysqli_query($db, "insert into items(item_id, user_id, title, username, password, url, comment, max_time) values(NULL, '$this->uid', '$title', '$username', AES_ENCRYPT('$password', UNHEX(SHA2('$username', 512))), '$url', '$comment', '$max_time')")
                     or die("Failed to query database: " . mysqli_error($db));
 
         mysqli_close($db);
         return $addQuery;
     }
-
-    // public function getItemById($id) {
-    //     // add edit logic
-    // }
 
     public function generatePassword($length = 16) {
         $pass = '';
@@ -87,25 +88,27 @@ class ItemsController {
         $max_time = $item->getMaxTime();
 
         $editQuerry = mysqli_query($db, "update items set title = '$title', username = '$username', 
-                        password = '$password',  url = '$url',  comment = '$comment',
+                        password = AES_ENCRYPT('$password', UNHEX(SHA2('$username', 512))),  url = '$url',  comment = '$comment',
                         max_time = ' $max_time' where item_id = $id")
                         or die("Failed to edit from database: " . mysqli_error($db));
 
         mysqli_close($db);
-        return $editQuerry;  
+        return $editQuerry;
     }
 
     //export CSV/JSON/XML
     public function exportItems($type) {
         $db = mysqli_connect("localhost", "root", "", "aplicatietw");
         // set data
-        $dataQuery = mysqli_query($db, "select * from items where user_id = " . $this->uid . "order by 1 asc");
+        $dataQuery = mysqli_query($db, "select item_id, user_id, title, username, AES_DECRYPT(password, UNHEX(SHA2(username, 512))) as \"password\", url, comment, max_time from items where user_id = " . $this->uid . " order by username asc")
+                        or die("Failed to query database: " . mysqli_error($db));
 
         switch($type) {
-            case "csv": CSVExporter::export($dataQuery);
-            case "json": JSONExporter::export($dataQuery);
-            case "xml": XMLExporter::export($dataQuery);
+            case "csv": CSVExporter::export($dataQuery, $this->uid); break;
+            case "json": JSONExporter::export($dataQuery, $this->uid); break;
+            case "xml": XMLExporter::export($dataQuery, $this->uid); break;
         }
+
         mysqli_close($db);
     }
 }

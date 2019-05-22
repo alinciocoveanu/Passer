@@ -20,12 +20,6 @@
                     <img src="/Passer/public/images/logo_transparent.png" alt="logo transparent">
                 </a>
             </div>
-            <nav>
-                <ul>
-                    <li class="current"><a href="index.php">About</a></li>
-                    <li><a href="index.php">Contact</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 

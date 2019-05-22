@@ -26,13 +26,12 @@ switch($op) {
         break;
     case 'register':
         $userController = new UsersController();
-        $user = new UserModel($_POST['username'], $_POST['password'], $_POST['email']);
+        $user = new UserModel($_POST['username'], $_POST['email']);
+        $password = $_POST['password'];
 
-        if($userController->createUser($user))
-        {
+        if($userController->createUser($user, $password)) {
             header("Location:/Passer/application/views/account.php");
-        }
-        else{
+        } else {
             header("Location:/Passer/application/views/createAccount.php?err=1");
         }
         break;
@@ -91,6 +90,23 @@ switch($op) {
         }
         header("Location:/Passer/application/views/account.php?orderType=" . $orderType);
         break;
+
+
+    case 'csv':
+        $itemController = new ItemsController($_GET['uid']);
+        $itemController->exportItems('csv');
+        break;
+
+    case 'json':
+        $itemController = new ItemsController($_GET['uid']);
+        $itemController->exportItems('json');
+        break;
+
+    case 'xml':
+        $itemController = new ItemsController($_GET['uid']);
+        $itemController->exportItems('xml');
+        break;
+        
 }
 
 ?>

@@ -54,7 +54,16 @@
                             <?php print $user->getUsername(); ?>
                         </button>
                         <div class="dropdownContent">
-                            <a href="#">Account settings</a> <!-- TODO: Export & import -->
+                            <button class="dropdown-button">
+                                <a href="/Passer/public/actionPage.php?op=json&uid=<?php echo $userId; ?>">
+                                    Export as  <!-- TODO -->
+                                </a>
+                            </button>
+                            <!-- <div class="dropdownContent">
+                                <a href="#">XML</a>
+                                <a href="#">JSON</a>
+                                <a href="#">CSV</a>
+                            </div> -->
                             <a href="/Passer/public/actionPage.php?op=logout">Log out</a>
                         </div>
                     </div>
@@ -126,10 +135,11 @@
             <div class="passItems">
                     <ul>
                         <?php
-                            if(isset($_GET['orderType']))
+                            if(isset($_GET['orderType'])){
                                 $items = $itemsController->getAllItems($_GET['orderType']);
-                            else
+                            } else {
                                 $items = $itemsController->getAllItems('default');
+                            }
                             if(!$items) {
                                 // error handling
                             } else 
@@ -286,7 +296,7 @@
                 }
                 
                 //!schimba aici daca nu merge generate!
-                xmlhttp.open("GET", "http://localhost:1234/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
+                xmlhttp.open("GET", "http://localhost/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
                 xmlhttp.send();
             }
         </script>
