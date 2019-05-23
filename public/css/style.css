@@ -4,6 +4,8 @@ body {
     line-height: 1.5;
     margin: 0;
     background-color: #f4f4f4;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 ul {
@@ -426,10 +428,14 @@ button:hover{
     max-width: 100%;
 }
 
+.rButton {
+    overflow: hidden;
+}
+
 #addButton {
     text-align: center;
     font-size: 20px;
-    position: fixed;
+    position: absolute;
     background-color: white;
     color: black;
     right: 50px;
@@ -469,6 +475,7 @@ button:hover{
     padding-top: 20px;
     padding-left: 20px;
     width: 100%;
+    overflow: hidden;
 }
 
 .custom-select label {
@@ -486,6 +493,10 @@ button:hover{
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+}
+
+.passItems {
+    overflow: auto;
 }
 
 .passItems ul{
