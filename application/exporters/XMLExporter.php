@@ -51,6 +51,8 @@
             // export to xml file
             header('Content-type: text/xml');
             header("Content-Disposition: attachment; filename=" . $xml_filename . "");
+            ignore_user_abort(true);
+            unlink($xml_filename);
         }
     }
 

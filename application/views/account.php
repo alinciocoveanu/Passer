@@ -4,10 +4,8 @@
     define('ROOT6', dirname(dirname(__FILE__)));
     
     require_once(ROOT6 . DS6 . 'controllers' . DS6 . 'UsersController.php');
-    require_once(ROOT6 . DS6 . 'controllers' . DS6 . 'ItemsController.php');
     require_once(ROOT6 . DS6 . 'models' . DS6 . 'UserModel.php');
     session_start();
-
     
     if((!isset($_SESSION['user']))){
         header("Location:/Passer/application/views/index.php");
@@ -16,16 +14,7 @@
         $user = $_SESSION['user'];
     }
 
-    $usersController = new UsersController();
-    $userId = $usersController->getUserId($user->getUsername());
-    $itemsController = new ItemsController($userId);
-
-    // https://github.com/elboletaire/password-strength-meter
-    // https://www.siphor.com/add-password-strength-meter-html5/
-    // https://stackoverflow.com/questions/948172/password-strength-meter
-    // https://css-tricks.com/password-strength-meter/
-    // https://www.solodev.com/blog/web-design/creating-a-password-strength-indicator.stml
-
+    $uid = $user->getUid();
 ?>
 
 <!DOCTYPE html>
@@ -54,23 +43,29 @@
                             <?php print $user->getUsername(); ?>
                         </button>
                         <div class="dropdownContent">
-                            <button class="dropdown-button">
-                                <a href="/Passer/public/actionPage.php?op=json&uid=<?php echo $userId; ?>">
-                                    Export as  <!-- TODO -->
-                                </a>
-                            </button>
-                            <!-- <div class="dropdownContent">
-                                <a href="#">XML</a>
-                                <a href="#">JSON</a>
-                                <a href="#">CSV</a>
-                            </div> -->
-                            <a href="/Passer/public/actionPage.php?op=logout">Log out</a>
+                            <button class="dropdown-button" onclick="document.getElementById('expBox').style.display='block'">Export</button>
+                            <a href="/Passer/public/loginControl.php?op=logout">Log out</a>
                         </div>
                     </div>
                 </nav>
             </div>
         </header>
-
+        <div id="expBox" class="exportBox">
+                <span onclick="document.getElementById('expBox').style.display='none'" class="close">&times;</span>
+                <form class="exportBoxContent animate" action="/Passer/public/actionPage.php" method="post">
+                    <div id="exportTop">
+                        <p>Export as: </p><br>
+                    </div>
+                    <div div="exportLower">
+                        <input type="hidden" name="uid" value="<?php echo $uid; ?>"></input>
+                        <input type="radio" name="format" value="xml" required>XML</input><br>
+                        <input type="radio" name="format" value="json" required>JSON</input><br>
+                        <input type="radio" name="format" value="csv" required>CSV</input><br>
+                        <button type="submit" name="op" value="export">Export</button> 
+                    </div>
+                </form>
+            </div>
+        </div>
         <!-- <div id="leftMenu">
             <button class="leftMenuButton">Web Pages</button>
             <button class="leftMenuButton">Online banking</button>
@@ -81,7 +76,8 @@
         <div id="rightBox">
             <div class="custom-select">
                 <label>Order by:</label>
-                <form method="GET" action="/Passer/public/actionPage.php">
+                <form method="post" action="/Passer/public/actionPage.php">
+                    <input type="hidden" name="uid" value="<?php echo $uid; ?>"></input>
                     <select name="orderType" title="Order by">
                         <option value="titleAZ">Title (A-Z)</option>
                         <option value="titleZA">Title (Z-A)</option>
@@ -98,7 +94,7 @@
                 <div id="addBox" class="popUpBox">
                     <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php">
                         <div style="padding: 20px">
-                            <input type="hidden" name="add_uid" value="<?php echo $userId; ?>">
+                            <input type="hidden" name="add_uid" value="<?php echo $uid; ?>">
 
                             <input type="text" placeholder="Enter Title" name="title" required>
 
@@ -135,71 +131,68 @@
             <div class="passItems">
                     <ul>
                         <?php
-                            if(isset($_GET['orderType'])){
-                                $items = $itemsController->getAllItems($_GET['orderType']);
-                            } else {
-                                $items = $itemsController->getAllItems('default');
-                            }
-                            if(!$items) {
-                                // error handling
-                            } else 
-                                while ($row = mysqli_fetch_assoc($items)): 
-                                    $id = $row['item_id'];?>
-                                <li>
-                                    <span class="title"><?php echo $row['title']; ?></span>
-                                    <span class="username"><?php echo $row['username']; ?></span>
-                                    <span class="copy">
-                                        <a href="#"><img src="/Passer/public/images/copy-512.png" width="40" height="30" onclick="copyPassword('<?php echo $row['password'] ?>')"></a>
-                                    </span>
-                                    <span class="edit">
-                                        <a href="#"><img src="/Passer/public/images/edit.png" alt="submit" onclick="document.getElementById('editBox<?php echo $id ?>').style.display='block'" width="30" height="30"></a>
-                                    </span>
-                                    <form method="post" action="/Passer/public/actionPage.php?op=delete">
-                                        <span class="delete">
-                                            <input type="hidden" name="del_id" value="<?php echo $id; ?>">
-                                            <input type="hidden" name="del_uid" value="<?php echo $userId; ?>">
-                                            <input type="image" src="/Passer/public/images/delete.png" alt="submit" width="40" height="30">
+                            if(isset($_SESSION['items'])){
+                                $items = $_SESSION['items'];
+                                if(!$items) {
+                                    // error handling
+                                } else 
+                                    foreach($items as $row) {
+                                        $id = $row[0];?>
+                                    <li>
+                                        <span class="title"><?php echo $row[2]; ?></span>
+                                        <span class="username"><?php echo $row[3]; ?></span>
+                                        <span class="copy">
+                                            <a href="#"><img src="/Passer/public/images/copy-512.png" width="40" height="30" onclick="copyPassword('<?php echo $row[4] ?>')"></a>
                                         </span>
-                                    </form>
-                                </li>
-                                <div id="editBox<?php echo $id ?>" class="popUpBox">
-                                    <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php">
-                                        <div style="padding: 20px">
-                                            <input type="hidden" name="edit_id" value="<?php echo $id; ?>">
+                                        <span class="edit">
+                                            <a href="#"><img src="/Passer/public/images/edit.png" alt="submit" onclick="document.getElementById('editBox<?php echo $id ?>').style.display='block'" width="30" height="30"></a>
+                                        </span>
+                                        <form method="post" action="/Passer/public/actionPage.php?op=delete">
+                                            <span class="delete">
+                                                <input type="hidden" name="del_id" value="<?php echo $id; ?>">
+                                                <input type="hidden" name="del_uid" value="<?php echo $uid; ?>">
+                                                <input type="image" src="/Passer/public/images/delete.png" alt="submit" width="40" height="30">
+                                            </span>
+                                        </form>
+                                    </li>
+                                    <div id="editBox<?php echo $id ?>" class="popUpBox">
+                                        <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php">
+                                            <div style="padding: 20px">
+                                                <input type="hidden" name="edit_id" value="<?php echo $id; ?>">
 
-                                            <input type="hidden" name="edit_uid" value="<?php echo $userId; ?>">
+                                                <input type="hidden" name="edit_uid" value="<?php echo $uid; ?>">
 
-                                            <input type="text" placeholder="Enter Title" name="title" value = "<?php echo $row['title'] ?>" required>
+                                                <input type="text" placeholder="Enter Title" name="title" value = "<?php echo $row[2] ?>" required>
 
-                                            <input type="text" placeholder="Enter Webpage URL" name="url" value = "<?php echo $row['url'] ?>" required>
+                                                <input type="text" placeholder="Enter Webpage URL" name="url" value = "<?php echo $row[5] ?>" required>
 
-                                            <input type="text" placeholder="Enter Username" name="username" value = "<?php echo $row['username'] ?>" required>
-                                            
-                                            <input type="text" placeholder="Comment / Description" name="comment" value = "<?php echo $row['comment'] ?>">
-                                            <label> 
-                                            <input type="password" placeholder="Enter Password" name="password" id="passwordEd<?php echo $id ?>" value = "<?php echo $row['password'] ?>" required>
-                                            <div class="eye">
-                                                <img src="/Passer/public/images/eye.png" alt="eye Back" width="30">
-                                                <img src="/Passer/public/images/eye-slash.png" onmouseover="showPassword(<?php echo $id ?>);" onmouseout="hidePassword(<?php echo $id ?>);" class="img-top" width="30" alt="eye Front">
+                                                <input type="text" placeholder="Enter Username" name="username" value = "<?php echo $row[3] ?>" required>
+                                                
+                                                <input type="text" placeholder="Comment / Description" name="comment" value = "<?php echo $row[6] ?>">
+                                                <label> 
+                                                <input type="password" placeholder="Enter Password" name="password" id="passwordEd<?php echo $id ?>" value = "<?php echo $row[4] ?>" required>
+                                                <div class="eye">
+                                                    <img src="/Passer/public/images/eye.png" alt="eye Back" width="30">
+                                                    <img src="/Passer/public/images/eye-slash.png" onmouseover="showPassword(<?php echo $id ?>);" onmouseout="hidePassword(<?php echo $id ?>);" class="img-top" width="30" alt="eye Front">
+                                                </div>
+                                                <div class="lengthPass">
+                                                    <button type="button" onclick="generatePassword(<?php echo $id ?>)" class="generatePassword">Generate Password</button>
+                                                    <input  type="range" id="inputLengthVal<?php echo $id ?>" name="length" min="8" max="100" value="16" oninput="outputLengthVal<?php echo $id ?>.value = inputLengthVal<?php echo $id ?>.value"></input>
+                                                    <output id="outputLengthVal<?php echo $id ?>">16</output>
+                                                </div>
+                                                
+                                                <label>Availability:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availability" value = "<?php echo $row[7] ?>">
+
+                                                <button name="op" value="edit" type="submit">Edit</button>
                                             </div>
-                                            <div class="lengthPass">
-                                                <button type="button" onclick="generatePassword(<?php echo $id ?>)" class="generatePassword">Generate Password</button>
-                                                <input  type="range" id="inputLengthVal<?php echo $id ?>" name="length" min="8" max="100" value="16" oninput="outputLengthVal<?php echo $id ?>.value = inputLengthVal<?php echo $id ?>.value"></input>
-                                                <output id="outputLengthVal<?php echo $id ?>">16</output>
-                                            </div>
-                                            
-                                            <label>Availability:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availability" value = "<?php echo $row['max_time'] ?>">
 
-                                            <button name="op" value="edit" type="submit">Edit</button>
-                                        </div>
-
-                                        <div class="boxLower">
-                                            <button type="button" onclick="closePopUp(<?php echo $id ?>, '<?php echo $row['password'] ?>')" class="cancelButton">Cancel</button>
-                                        </div>                             
-                                    </form>
-                                </div>
-                        <?php
-                            endwhile; ?>
+                                            <div class="boxLower">
+                                                <button type="button" onclick="closePopUp(<?php echo $id ?>, '<?php echo $row[4] ?>')" class="cancelButton">Cancel</button>
+                                            </div>                             
+                                        </form>
+                                    </div>
+                            <?php
+                                }} ?>
                     </ul>
             </div>
         </div>
@@ -296,7 +289,7 @@
                 }
                 
                 //!schimba aici daca nu merge generate!
-                xmlhttp.open("GET", "http://localhost/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
+                xmlhttp.open("GET", "http://localhost:1234/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
                 xmlhttp.send();
             }
         </script>

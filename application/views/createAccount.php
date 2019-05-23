@@ -27,7 +27,7 @@
         <div class="formular">
             <h3>Create an account</h3>
             <form class="createFormular"
-                onsubmit="checkPass();" action="/Passer/public/actionPage.php" method="post">
+                onsubmit="checkPass();" action="/Passer/public/loginControl.php" method="post">
                 <?php if(@$_GET['err'] == 1) { ?>
                 <p>User already exists. Please try again.</p>
                 <?php } ?>

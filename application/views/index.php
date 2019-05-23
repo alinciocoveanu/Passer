@@ -37,7 +37,7 @@
                 <button onclick="document.getElementById('logInBox').style.display='block'" style="width:auto;">Log In</button>
             </div>
             <div id="logInBox" class="popUpBox">
-                <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php">
+                <form class="popUpBoxContent animate" method="post" action="/Passer/public/loginControl.php">
                     <div style="padding: 20px">
                         <?php if(@$_GET['err'] == 1) { ?>
                         <p>Login Incorrect. Please try again.</p>
