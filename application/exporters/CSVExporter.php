@@ -28,12 +28,13 @@
             $csv_filename = 'csv_export_'. $uid . '_' . date('Y-m-d') . '.csv';
             CSVExporter::dataToCSVFile($dataQuery, $csv_filename);
 
-            readfile($csv_filename);
+            if(readfile($csv_filename) != false) {
+                header("Content-type: text/x-csv");
+                header("Content-Disposition: attachment; filename=" . $csv_filename . "");
+                ignore_user_abort(true);
+                unlink($csv_filename);
+            }
 
-            header("Content-type: text/x-csv");
-            header("Content-Disposition: attachment; filename=" . $csv_filename . "");
-            ignore_user_abort(true);
-            unlink($csv_filename);
         }
     }
 

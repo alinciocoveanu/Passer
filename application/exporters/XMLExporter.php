@@ -46,12 +46,12 @@
 
             fclose($myfile);
 
-            readfile($xml_filename);
-
-            header('Content-type: text/xml');
-            header("Content-Disposition: attachment; filename=" . $xml_filename . "");
-            ignore_user_abort(true);
-            unlink($xml_filename);
+            if(readfile($xml_filename) != false) {
+                header('Content-type: text/xml');
+                header("Content-Disposition: attachment; filename=" . $xml_filename . "");
+                ignore_user_abort(true);
+                unlink($xml_filename);
+            }
         }
     }
 
