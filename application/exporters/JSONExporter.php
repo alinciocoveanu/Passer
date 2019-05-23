@@ -37,6 +37,8 @@
 
             header('Content-type: application/json');
             header("Content-Disposition: attachment; filename=" . $json_filename . "");
+            ignore_user_abort(true);
+            unlink($json_filename);
         }
     }
 

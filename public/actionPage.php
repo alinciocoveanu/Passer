@@ -2,39 +2,17 @@
 define('DS7', DIRECTORY_SEPARATOR);
 define('ROOT7', dirname(dirname(__FILE__)));
 
-require_once(ROOT7 . DS7 . 'application' . DS7 . 'models' . DS7 . 'UserModel.php');
 require_once(ROOT7 . DS7 . 'application' . DS7 . 'models' . DS7 . 'ItemModel.php');
 require_once(ROOT7 . DS7 . 'application' . DS7 . 'controllers' . DS7 . 'ItemsController.php');
-require_once(ROOT7 . DS7 . 'application' . DS7 . 'controllers' . DS7 . 'UsersController.php');
+
+session_start();
+if(!isset($_SESSION['user'])) {
+    http_response_code(403);
+    die('Forbidden');
+}
 
 @$op = $_REQUEST['op'];
-
 switch($op) {
-    case 'login':
-        $userController = new UsersController();
-
-        if($userController->logUser($_POST['username'], $_POST['password'])) {
-            header("Location:/Passer/application/views/account.php");
-        } else
-            header("Location:/Passer/application/views/index.php?err=1");
-        break;
-    case 'logout':
-        $userController = new UsersController();
-        
-        $userController->logout();
-        header("Location:/Passer/application/views/index.php");
-        break;
-    case 'register':
-        $userController = new UsersController();
-        $user = new UserModel($_POST['username'], $_POST['email']);
-        $password = $_POST['password'];
-
-        if($userController->createUser($user, $password)) {
-            header("Location:/Passer/application/views/account.php");
-        } else {
-            header("Location:/Passer/application/views/createAccount.php?err=1");
-        }
-        break;
     case 'password':
         $itemController = new ItemsController(NULL);
         $length = $_GET['length'];
@@ -48,7 +26,7 @@ switch($op) {
         $response = $itemController->addItem($item);
         
         if($response) {
-            header("Location:/Passer/application/views/account.php");
+            header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
         } else {
             header("Location:/Passer/application/views/createAccount.php?err=1");
         }
@@ -62,7 +40,7 @@ switch($op) {
         $response = $itemController->editItem($itemId, $item);
 
         if($response) {
-            header("Location:/Passer/application/views/account.php");
+            header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
         } else {
             header("Location:/Passer/application/views/account.php?err=1");
         }
@@ -75,7 +53,7 @@ switch($op) {
         $response = $itemController->deleteItem($itemId);
 
         if($response) {
-            header("Location:/Passer/application/views/account.php");
+            header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
         } else {
             header("Location:/Passer/application/views/account.php?err=1");
         }
@@ -83,30 +61,19 @@ switch($op) {
 
     case 'list':
         $orderType = '';
-        if(isset($_GET['orderType'])) {
-            $orderType = $_GET['orderType'];
+        $itemsController = new ItemsController($_REQUEST['uid']);
+        if(isset($_REQUEST['orderType'])) {
+            $items = $itemsController->getAllItems($_REQUEST['orderType']);
         } else {
-            $orderType = "default";
+            $items = $itemsController->getAllItems('default');
         }
-        header("Location:/Passer/application/views/account.php?orderType=" . $orderType);
+        $_SESSION['items'] = $items;
+        header("Location:/Passer/application/views/account.php");
         break;
 
-
-    case 'csv':
-        $itemController = new ItemsController($_GET['uid']);
-        $itemController->exportItems('csv');
+    case 'export':
+        $itemController = new ItemsController($_POST['uid']);
+        $itemController->exportItems($_POST['format']);
         break;
-
-    case 'json':
-        $itemController = new ItemsController($_GET['uid']);
-        $itemController->exportItems('json');
-        break;
-
-    case 'xml':
-        $itemController = new ItemsController($_GET['uid']);
-        $itemController->exportItems('xml');
-        break;
-        
 }
-
 ?>
