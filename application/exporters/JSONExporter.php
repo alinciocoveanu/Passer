@@ -34,7 +34,7 @@
             fclose($myfile);
 
             readfile($json_filename);
-            // export to json file
+
             header('Content-type: application/json');
             header("Content-Disposition: attachment; filename=" . $json_filename . "");
         }

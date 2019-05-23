@@ -48,7 +48,6 @@
 
             readfile($xml_filename);
 
-            // export to xml file
             header('Content-type: text/xml');
             header("Content-Disposition: attachment; filename=" . $xml_filename . "");
         }
