@@ -10,8 +10,7 @@ class UsersController {
     private $encryptionMethod = 'aes-256-cbc';
 
     public function __construct() {
-        // storing passwords - https://zinoui.com/blog/storing-passwords-securely
-        // https://dev.mysql.com/doc/refman/5.5/en/encryption-functions.html#function_aes-decrypt
+        
     }
 
     private function encryptPassword($username, $password) {
@@ -124,7 +123,7 @@ class UsersController {
             //start the session for the user
             session_start();
             //set the user object to the session
-            $_SESSION['user'] = $user;
+            $_SESSION['user'] = $rez;
             return true;
         }
         return false;

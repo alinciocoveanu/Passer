@@ -11,69 +11,96 @@ if(!isset($_SESSION['user'])) {
     die('Forbidden');
 }
 
-@$op = $_REQUEST['op'];
+$op = '';
+
+if(isset($_REQUEST['op']))
+    $op = $_REQUEST['op'];
+
 switch($op) {
     case 'password':
         $itemController = new ItemsController(NULL);
-        $length = $_GET['length'];
-        echo $itemController->generatePassword($length);
+
+        if(isset($_GET['length'])) {
+            $length = $_GET['length'];
+            echo $itemController->generatePassword($length);
+        } 
+
         break;
     
     case 'add':
-        $userId = $_POST['add_uid'];
-        $itemController = new ItemsController($userId);
-        $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
-        $response = $itemController->addItem($item);
-        
-        if($response) {
-            header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
-        } else {
-            header("Location:/Passer/application/views/createAccount.php?err=1");
-        }
+        if(isset($_POST['add_uid'])) {
+            $userId = $_POST['add_uid'];
+            $itemController = new ItemsController($userId);
+            if(isset($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime'])) {
+                $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
+                $response = $itemController->addItem($item);
+            } else $response = false;
+            if($response) {
+                header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
+            } else 
+                header("Location:/Passer/application/views/account.php?addErr=1");
+        } else 
+            header("Location:/Passer/application/views/account.php?addErr=1");
+
         break;
 
     case 'edit':
-        $userId = $_POST['edit_uid'];
-        $itemId = $_POST['edit_id'];
-        $itemController = new ItemsController($userId);
-        $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
-        $response = $itemController->editItem($itemId, $item);
+        if(isset($_POST['edit_uid'], $_POST['edit_id'])) {
+            $userId = $_POST['edit_uid'];
+            $itemId = $_POST['edit_id'];
+            $itemController = new ItemsController($userId);
+            if(isset($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime'])) {
+                $item = new ItemModel($_POST['title'], $_POST['username'], $_POST['password'], $_POST['url'], $_POST['comment'], $_POST['maxTime']);
+                $response = $itemController->editItem($itemId, $item);
+            } else $response = false;
+            if($response)
+                header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
+            else 
+                header("Location:/Passer/application/views/account.php?editErr=1");
+        } else
+            header("Location:/Passer/application/views/account.php?editErr=1"); 
 
-        if($response) {
-            header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
-        } else {
-            header("Location:/Passer/application/views/account.php?err=1");
-        }
         break;
 
     case 'delete':
-        $userId = $_POST['del_uid'];
-        $itemId = $_POST['del_id'];
-        $itemController = new ItemsController($userId);
-        $response = $itemController->deleteItem($itemId);
+        if(isset($_POST['del_uid'], $_POST['del_id'])) {
+            $userId = $_POST['del_uid'];
+            $itemId = $_POST['del_id'];
+            $itemController = new ItemsController($userId);
+            $response = $itemController->deleteItem($itemId);
 
-        if($response) {
-            header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
-        } else {
-            header("Location:/Passer/application/views/account.php?err=1");
-        }
+            if($response) {
+                header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
+            } else
+                header("Location:/Passer/application/views/account.php?delErr=1");
+        } else
+            header("Location:/Passer/application/views/account.php?delErr=1");
+
         break;
 
     case 'list':
         $orderType = '';
-        $itemsController = new ItemsController($_REQUEST['uid']);
-        if(isset($_REQUEST['orderType'])) {
-            $items = $itemsController->getAllItems($_REQUEST['orderType']);
-        } else {
-            $items = $itemsController->getAllItems('default');
-        }
-        $_SESSION['items'] = $items;
-        header("Location:/Passer/application/views/account.php");
+        if(isset($_REQUEST['uid'])) {
+            $itemsController = new ItemsController($_REQUEST['uid']);
+            if(isset($_REQUEST['orderType'])) {
+                $items = $itemsController->getAllItems($_REQUEST['orderType']);
+            } else {
+                $items = $itemsController->getAllItems('default');
+            }
+            $_SESSION['items'] = $items;
+            header("Location:/Passer/application/views/account.php");
+        } else 
+            header("Location:/Passer/application/views/account.php?listErr=1");
+
         break;
 
     case 'export':
-        $itemController = new ItemsController($_POST['uid']);
-        $itemController->exportItems($_POST['format']);
+        if(isset($_POST['uid'], $_POST['format'])) {
+            $itemController = new ItemsController($_POST['uid']);
+            $itemController->exportItems($_POST['format']);
+        } else 
+            header("Location:/Passer/application/views/account.php?expErr=1");
+            
         break;
 }
 ?>
