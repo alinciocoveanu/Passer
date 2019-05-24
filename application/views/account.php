@@ -10,9 +10,8 @@
     if((!isset($_SESSION['user']))){
         header("Location:/Passer/application/views/index.php");
         exit;
-    } else {
+    } else
         $user = $_SESSION['user'];
-    }
 
     $uid = $user->getUid();
 ?>
@@ -40,7 +39,7 @@
                 <nav>
                     <div class="dropdown">
                         <button class="dropdown-button"> 
-                            <?php print $user->getUsername(); ?>
+                            <?php echo $user->getUsername(); ?>
                         </button>
                         <div class="dropdownContent">
                             <button class="dropdown-button" onclick="document.getElementById('expBox').style.display='block'">Export</button>
@@ -61,17 +60,11 @@
                         <input type="radio" name="format" value="xml" required>XML</input><br>
                         <input type="radio" name="format" value="json" required>JSON</input><br>
                         <input type="radio" name="format" value="csv" required>CSV</input><br>
-                        <button type="submit" name="op" value="export">Export</button> 
+                        <button type="submit" name="op" value="export" onclick="document.getElementById('expBox').style.display='none'">Export</button> 
                     </div>
                 </form>
             </div>
         </div>
-        <!-- <div id="leftMenu">
-            <button class="leftMenuButton">Web Pages</button>
-            <button class="leftMenuButton">Online banking</button>
-            <button class="leftMenuButton">Emails</button>
-            <button class="leftMenuButton">Wi-Fi networks</button>
-        </div> -->
 
         <div id="rightBox">
             <div class="custom-select">
@@ -92,7 +85,7 @@
             <div class="rButton">
                 <button onclick="document.getElementById('addBox').style.display='block'" id="addButton" type="submit">Add</button>
                 <div id="addBox" class="popUpBox">
-                    <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php">
+                    <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php" id="addForm">
                         <div style="padding: 20px">
                             <input type="hidden" name="add_uid" value="<?php echo $uid; ?>">
 
@@ -116,7 +109,7 @@
                                 <output id="outputLengthVal">16</output>
                             </div>
 
-                            <label>Availability:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availability">
+                            <label>Availability:</label><input type="date" name="maxTime" placeholder="Availability" id="addDate">
 
                             <button name="op" value="add" type="submit">Add</button>
                         </div>
@@ -159,7 +152,7 @@
                                         </form>
                                     </li>
                                     <div id="editBox<?php echo $id ?>" class="popUpBox">
-                                        <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php">
+                                        <form class="popUpBoxContent animate" method="post" action="/Passer/public/actionPage.php" id="editForm<?php echo $id ?>">
                                             <div style="padding: 20px">
                                                 <input type="hidden" name="edit_id" value="<?php echo $id; ?>">
 
@@ -186,8 +179,18 @@
                                                     <output id="outputLengthVal<?php echo $id ?>">16</output>
                                                 </div>
                                                 
-                                                <label>Availability:</label><input type="date" min="<?php echo date('YYYY-MM-DD'); ?>" name="maxTime" placeholder="Availability" value = "<?php echo $row[7] ?>">
+                                                <label>Availability:</label><input type="date" name="maxTime" placeholder="Availability" value = "<?php echo $row[7] ?>" id="editDate<?php echo $id ?>">
+                                                <script>
+                                                    var today = new Date();
+                                                    var dd = today.getDate() + 1;
+                                                    var mm = today.getMonth() + 1;
+                                                    var yyyy = today.getFullYear();
+                                                    if(dd < 10) dd = '0' + dd;
+                                                    if(mm < 10) mm = '0' + mm;
 
+                                                    today = yyyy + '-' + mm + '-' + dd;
+                                                    document.getElementById("editDate<?php echo $id ?>").setAttribute("min", today);
+                                                </script>
                                                 <button name="op" value="edit" type="submit">Edit</button>
                                             </div>
 
@@ -205,24 +208,29 @@
         </div>
         
         <script>
+            var today = new Date();
+            var dd = today.getDate() + 1;
+            var mm = today.getMonth() + 1;
+            var yyyy = today.getFullYear();
+            if(dd < 10) dd = '0' + dd;
+            if(mm < 10) mm = '0' + mm;
+
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById("addDate").setAttribute("min", today);
+
             function closePopUp(id, password) {
                 var x = '', y = '';
                 switch(id) {
                     case 'add': 
                         x = document.getElementById("addBox");
-                        y = document.getElementById("password");
+                        document.getElementById("addForm").reset();
                         break;
                     default:
                         x = document.getElementById("editBox" + id);
-                        y = document.getElementById("passwordEd" + id);
+                        document.getElementById("editForm" + id).reset();
                         break;
                 }
                 x.style.display = 'none';
-                y.type = 'password';
-                if(id == 'add')
-                    y.value = '';
-                else
-                    y.value = password;
             }
 
             function copyPassword(password) {
@@ -232,7 +240,7 @@
                     elem.select();
                     document.execCommand('copy');
                     document.body.removeChild(elem);
-                }
+            }
 
             function showPassword(id) {
                 var x = '';
@@ -296,9 +304,35 @@
                 }
                 
                 //!schimba aici daca nu merge generate!
-                xmlhttp.open("GET", "http://localhost/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
+                xmlhttp.open("GET", "http://localhost:1234/Passer/public/actionPage.php?op=password&length=" + length, true);
                 xmlhttp.send();
             }
         </script>
+        <?php
+            if(isset($_GET['addErr'])) {
+                $message = "Failed to add password.";
+                echo "<script type='text/javascript'>alert('$message');</script>";
+            }
+
+            if(isset($_GET['editErr'])) {
+                $message = "Failed to edit item.";
+                echo "<script type='text/javascript'>alert('$message');</script>";
+            }
+
+            if(isset($_GET['delErr'])) {
+                $message = "Failed to delete item.";
+                echo "<script type='text/javascript'>alert('$message');</script>";
+            }
+
+            if(isset($_GET['listErr'])) {
+                $message = "Failed to list items.";
+                echo "<script type='text/javascript'>alert('$message');</script>";
+            }
+
+            if(isset($_GET['expErr'])) {
+                $message = "Failed to export.";
+                echo "<script type='text/javascript'>alert('$message');</script>";
+            }
+        ?>
     </body>
 </html>
