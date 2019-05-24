@@ -131,16 +131,19 @@
             <div class="passItems">
                     <ul>
                         <?php
-                            if(isset($_SESSION['items'])){
+                            if(isset($_SESSION['items'])) {
                                 $items = $_SESSION['items'];
-                                if(!$items) {
-                                    // error handling
-                                } else 
+                                if($items != null) {
                                     foreach($items as $row) {
-                                        $id = $row[0];?>
+                                        $id = $row[0];
+                                        $available = true;
+                                        if(time() - strtotime($row[7]) >= 0 && $row[7] != '0000-00-00') {
+                                            $available = false;
+                                        }
+                        ?>
                                     <li>
-                                        <span class="title"><?php echo $row[2]; ?></span>
-                                        <span class="username"><?php echo $row[3]; ?></span>
+                                    <span class="title" <?php if(!$available) {?> style="color: red" <?php } ?> ><?php echo $row[2]; ?></span>
+                                        <span class="username" <?php if(!$available) {?> style="color: red" <?php } ?> ><?php echo $row[3]; ?></span>
                                         <span class="copy">
                                             <a href="#"><img src="/Passer/public/images/copy-512.png" width="40" height="30" onclick="copyPassword('<?php echo $row[4] ?>')"></a>
                                         </span>
@@ -162,6 +165,8 @@
 
                                                 <input type="hidden" name="edit_uid" value="<?php echo $uid; ?>">
 
+                                                <?php if(!$available) {?> <p style="color: red">Please change your password!</p> <?php } ?>
+
                                                 <input type="text" placeholder="Enter Title" name="title" value = "<?php echo $row[2] ?>" required>
 
                                                 <input type="text" placeholder="Enter Webpage URL" name="url" value = "<?php echo $row[5] ?>" required>
@@ -181,7 +186,7 @@
                                                     <output id="outputLengthVal<?php echo $id ?>">16</output>
                                                 </div>
                                                 
-                                                <label>Availability:</label><input type="date" min="<?php echo date('dd-mm-YY'); ?>" name="maxTime" placeholder="Availability" value = "<?php echo $row[7] ?>">
+                                                <label>Availability:</label><input type="date" min="<?php echo date('YYYY-MM-DD'); ?>" name="maxTime" placeholder="Availability" value = "<?php echo $row[7] ?>">
 
                                                 <button name="op" value="edit" type="submit">Edit</button>
                                             </div>
@@ -192,7 +197,9 @@
                                         </form>
                                     </div>
                             <?php
-                                }} ?>
+                                        }
+                                }
+                            } ?>
                     </ul>
             </div>
         </div>
@@ -289,7 +296,7 @@
                 }
                 
                 //!schimba aici daca nu merge generate!
-                xmlhttp.open("GET", "http://localhost:1234/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
+                xmlhttp.open("GET", "http://localhost/Passer/public/actionPage.php?op=password&length=" + length, true); //send a request to api
                 xmlhttp.send();
             }
         </script>
