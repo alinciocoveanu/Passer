@@ -97,7 +97,10 @@ switch($op) {
     case 'export':
         if(isset($_POST['uid'], $_POST['format'])) {
             $itemController = new ItemsController($_POST['uid']);
-            $itemController->exportItems($_POST['format']);
+            
+            if($itemController->exportItems($_POST['format']) == false) {
+                header("Location:/Passer/application/views/account.php?expErr=1");
+            }
         } else 
             header("Location:/Passer/application/views/account.php?expErr=1");
             

@@ -38,7 +38,9 @@
                 header("Content-Disposition: attachment; filename=" . $json_filename . "");
                 ignore_user_abort(true);
                 unlink($json_filename);
+                return true;
             }
+            return false;
         }
     }
 
