@@ -104,13 +104,13 @@ class ItemsController {
         $dataQuery = mysqli_query($db, "select item_id, user_id, title, username, AES_DECRYPT(password, UNHEX(SHA2(username, 512))) as \"password\", url, comment, max_time from items where user_id = " . $this->uid . " order by username asc")
                         or die("Failed to query database: " . mysqli_error($db));
 
-        switch($type) {
-            case "csv": CSVExporter::export($dataQuery, $this->uid); break;
-            case "json": JSONExporter::export($dataQuery, $this->uid); break;
-            case "xml": XMLExporter::export($dataQuery, $this->uid); break;
-        }
-
         mysqli_close($db);
+        
+        switch($type) {
+            case "csv": return CSVExporter::export($dataQuery, $this->uid); break;
+            case "json": return JSONExporter::export($dataQuery, $this->uid); break;
+            case "xml": return XMLExporter::export($dataQuery, $this->uid); break;
+        }
     }
 }
 ?>
