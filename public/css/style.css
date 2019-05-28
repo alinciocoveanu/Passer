@@ -226,7 +226,7 @@ footer {
     box-sizing: border-box;
 } */
 
-#formular input[type=text], #formular input[type=password] {
+#formular input[type=text], #formular input[type=password], #formular input[type=email] {
     width: 40%;
     padding: 12px 20px;
     margin: 8px 0;
