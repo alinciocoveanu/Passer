@@ -32,11 +32,11 @@
                 <p>User already exists. Please try again.</p>
                 <?php } ?>
                 E-mail<br>
-                <input type="text" name="email" required><br>
+                <input type="email" name="email" required><br>
                 Username<br>
-                <input type="text" name="username" required><br>
+                <input type="text" name="username" pattern="[^\s]{6,}" title="Username must not contain spaces and must have a minimum length of 6" required><br>
                 Password<br>
-                <input type="password" id="password" name="password" required><br>
+                <input type="password" id="password" name="password" pattern=".{8,}" title="Minimum 8 characters" required><br>
                 <div class="eyeCreate">
                     <img src="/Passer/public/images/eye.png" alt="eye Back" width="30">
                     <img src="/Passer/public/images/eye-slash.png" onmouseover="showPassword();" onmouseout="hidePassword();" class="img-top" width="30" alt="eye Front">
