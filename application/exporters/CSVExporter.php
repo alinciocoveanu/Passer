@@ -33,8 +33,9 @@
                 header("Content-Disposition: attachment; filename=" . $csv_filename . "");
                 ignore_user_abort(true);
                 unlink($csv_filename);
+                return true;
             }
-
+            return false;
         }
     }
 
