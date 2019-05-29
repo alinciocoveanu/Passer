@@ -7,7 +7,7 @@ require_once(ROOT7 . DS7 . 'application' . DS7 . 'controllers' . DS7 . 'ItemsCon
 
 function badRequest() {
     http_response_code(400);
-    die('400 Bad Request');
+    echo '400 Bad Request';
 }
 
 function forbidden() {
@@ -48,11 +48,11 @@ switch($op) {
             if($response) {
                 header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
             } else 
-                header("Location:/Passer/application/views/account.php?addErr=1");
                 badRequest();
+                header("Location:/Passer/application/views/account.php?addErr=1");
         } else {
-            header("Location:/Passer/application/views/account.php?addErr=1");
             badRequest();
+            header("Location:/Passer/application/views/account.php?addErr=1");
         }
 
         break;
@@ -69,12 +69,12 @@ switch($op) {
             if($response)
                 header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
             else {
-                header("Location:/Passer/application/views/account.php?editErr=1");
                 badRequest();
+                header("Location:/Passer/application/views/account.php?editErr=1");
             }
         } else {
-            header("Location:/Passer/application/views/account.php?editErr=1"); 
             badRequest();
+            header("Location:/Passer/application/views/account.php?editErr=1"); 
         }
 
         break;
@@ -89,12 +89,12 @@ switch($op) {
             if($response) {
                 header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
             } else {
-                header("Location:/Passer/application/views/account.php?delErr=1");
                 badRequest();
+                header("Location:/Passer/application/views/account.php?delErr=1");
             }
         } else {
-            header("Location:/Passer/application/views/account.php?delErr=1");
             badRequest();
+            header("Location:/Passer/application/views/account.php?delErr=1");
         }
 
         break;
@@ -111,8 +111,8 @@ switch($op) {
             $_SESSION['items'] = $items;
             header("Location:/Passer/application/views/account.php");
         } else {
-            header("Location:/Passer/application/views/account.php?listErr=1");
             badRequest();
+            header("Location:/Passer/application/views/account.php?listErr=1");
         }
         break;
 
@@ -121,12 +121,12 @@ switch($op) {
             $itemController = new ItemsController($_POST['uid']);
             
             if($itemController->exportItems($_POST['format']) == false) {
-                header("Location:/Passer/application/views/account.php?expErr=1");
                 badRequest();
+                header("Location:/Passer/application/views/account.php?expErr=1");
             }
         } else {
-            header("Location:/Passer/application/views/account.php?expErr=1");
             badRequest();
+            header("Location:/Passer/application/views/account.php?expErr=1");
         }
             
         break;

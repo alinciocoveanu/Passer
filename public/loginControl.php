@@ -7,7 +7,7 @@ require_once(ROOT8 . DS8 . 'application' . DS8 . 'controllers' . DS8 . 'UsersCon
 
 function badRequest() {
     http_response_code(400);
-    die('400 Bad Request');
+    echo '400 Bad Request';
 }
 
 
@@ -25,12 +25,12 @@ switch($op) {
             if($userController->logUser($_POST['username'], $_POST['password'])) {
                 header("Location:/Passer/application/views/account.php");
             } else {
-                header("Location:/Passer/application/views/index.php?err=1");
                 badRequest();
+                header("Location:/Passer/application/views/index.php?err=1");
             }
         } else {
-            header("Location:/Passer/application/views/index.php?err=1");
             badRequest();
+            header("Location:/Passer/application/views/index.php?err=1");
         }
         break;
 
@@ -51,12 +51,12 @@ switch($op) {
             if($userController->createUser($user, $password)) {
                 header("Location:/Passer/application/views/account.php");
             } else {
-                header("Location:/Passer/application/views/createAccount.php?err=1");
                 badRequest();
+                header("Location:/Passer/application/views/createAccount.php?err=1");
             }
         } else {
-            header("Location:/Passer/application/views/createAccount.php?err=1");
             badRequest();
+            header("Location:/Passer/application/views/createAccount.php?err=1");
         }
         break;
 
