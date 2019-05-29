@@ -5,16 +5,25 @@ define('ROOT7', dirname(dirname(__FILE__)));
 require_once(ROOT7 . DS7 . 'application' . DS7 . 'models' . DS7 . 'ItemModel.php');
 require_once(ROOT7 . DS7 . 'application' . DS7 . 'controllers' . DS7 . 'ItemsController.php');
 
-session_start();
-if(!isset($_SESSION['user'])) {
-    http_response_code(403);
-    die('Forbidden');
+function badRequest() {
+    http_response_code(400);
+    echo '400 Bad Request';
 }
+
+function forbidden() {
+    http_response_code(403);
+    die('403 Forbidden');
+}
+
+session_start();
+if(!isset($_SESSION['user'])) 
+    forbidden();
 
 $op = '';
 
 if(isset($_REQUEST['op']))
     $op = $_REQUEST['op'];
+else badRequest();
 
 switch($op) {
     case 'password':
@@ -24,6 +33,7 @@ switch($op) {
             $length = $_GET['length'];
             echo $itemController->generatePassword($length);
         } 
+        else echo $itemController->generatePassword();
 
         break;
     
@@ -38,9 +48,12 @@ switch($op) {
             if($response) {
                 header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
             } else 
+                badRequest();
                 header("Location:/Passer/application/views/account.php?addErr=1");
-        } else 
+        } else {
+            badRequest();
             header("Location:/Passer/application/views/account.php?addErr=1");
+        }
 
         break;
 
@@ -55,10 +68,14 @@ switch($op) {
             } else $response = false;
             if($response)
                 header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
-            else 
+            else {
+                badRequest();
                 header("Location:/Passer/application/views/account.php?editErr=1");
-        } else
+            }
+        } else {
+            badRequest();
             header("Location:/Passer/application/views/account.php?editErr=1"); 
+        }
 
         break;
 
@@ -71,10 +88,14 @@ switch($op) {
 
             if($response) {
                 header("Location:/Passer/public/actionPage.php?op=list&uid=" . $userId);
-            } else
+            } else {
+                badRequest();
                 header("Location:/Passer/application/views/account.php?delErr=1");
-        } else
+            }
+        } else {
+            badRequest();
             header("Location:/Passer/application/views/account.php?delErr=1");
+        }
 
         break;
 
@@ -89,9 +110,10 @@ switch($op) {
             }
             $_SESSION['items'] = $items;
             header("Location:/Passer/application/views/account.php");
-        } else 
+        } else {
+            badRequest();
             header("Location:/Passer/application/views/account.php?listErr=1");
-
+        }
         break;
 
     case 'export':
@@ -99,11 +121,19 @@ switch($op) {
             $itemController = new ItemsController($_POST['uid']);
             
             if($itemController->exportItems($_POST['format']) == false) {
+                badRequest();
                 header("Location:/Passer/application/views/account.php?expErr=1");
             }
-        } else 
+        } else {
+            badRequest();
             header("Location:/Passer/application/views/account.php?expErr=1");
+        }
             
+        break;
+    
+    default:
+        http_response_code(404);
+        die('404 Not Found');
         break;
 }
 ?>
