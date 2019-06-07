@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <title>Passer User Guide</title>
+        <meta name="description" content="The documentation of our version of Passer.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+
+        <section>
+            <h1>
+                Documentation for Passer
+            </h1>
+
+            <h4>
+                Ciocoveanu Alin & Petrescu Andrei
+            </h4>
+        </section>
+        
+        <section>
+            <h1>
+                Technology stack
+            </h1>
+            
+            <p>
+                Our project is composed of <i>front-end</i> and <i>back-end</i>. 
+            </p>
+
+            <p>
+                The <i>front-end</i> is realised using mainly <b>HTML</b> and <b>CSS</b>, with some javascript that implements some functionalities to our webpage.
+            </p>
+            <p>
+                The <i>back-end</i> is implemented using <b>PHP</b>.
+                Our <i>database</i> is going to use the mysqli extension and it will store the login credentials and the data for the password items for each user.
+                The user is allowed to make <i>CRUD</i> operations on the database in order to add/remove/edit password items.
+                The account and items passwords will be encrypted using <i>AES-256 encryption</i>.
+                The users will be able to export their password items data, having 3 different options: JSON, XML and CSV.
+            </p>
+            
+            <h2>
+                Work split
+                <h3>
+                    Ciocoveanu Alin
+                </h3>
+
+                <li>
+                    implement the login and register functionalities (front-end and also back-end)
+                </li>
+
+                <li>
+                    implement some account functionalities (like generate password, copy password, edit item)
+                </li>
+
+                <li>
+                    implement the database schema
+                </li>
+                
+
+                <h3>
+                    Petrescu Andrei
+                </h3>
+                <li>
+                    implement account functionalities (front-end and also back-end)
+                </li>
+
+                <li>
+                    implement the database functionality (methods)
+                </li>
+
+                <li>
+                    implement encryption
+                </li>
+            </h2>
+        </section>
+
+    </body>
+</html>
